@@ -1,0 +1,9 @@
+<resources>
+  <string name="app_name">D&amp;D Grid</string>
+
+  <string name="button_connect">Connect</string>
+  <string name="button_send_data">Send data</string>
+
+  <string name="text_connecting_prefix">Connecting</string>
+  <string name="text_sending_data">Sending data</string>
+</resources>
