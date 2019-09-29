@@ -2,7 +2,16 @@
 /build
 
 /.gradle
-/.idea
 
 /local.properties
 *.iml
+
+/.idea/*
+/.idea/codeStyles/*
+/.idea/runConfigurations/*
+
+!/.idea/runConfigurations
+!/.idea/runConfigurations/debug_app.xml
+
+!/.idea/codeStyles
+!/.idea/codeStyles/codeStyleConfig.xml
