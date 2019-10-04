@@ -1,16 +1,13 @@
 package com.aau.dnd
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.button_connect
-import kotlinx.android.synthetic.main.activity_main.connect_indicator
-import kotlinx.android.synthetic.main.activity_main.text_status
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import androidx.core.content.ContextCompat.getColor
+import com.aau.dnd.util.ColoredTabListener
+import com.aau.dnd.util.FragmentPager
+import kotlinx.android.synthetic.main.activity_main.tab_layout
+import kotlinx.android.synthetic.main.activity_main.view_pager
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,27 +16,37 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        button_connect.setOnClickListener {
-            connect_indicator.visibility = View.VISIBLE
-            button_connect.isEnabled = false
+        val fragments = listOf(
+            getDrawable(R.drawable.ic_bluetooth) to ConnectFragment(),
+            getDrawable(R.drawable.ic_videogame_asset) to PlayFragment(),
+            getDrawable(R.drawable.ic_settings) to SettingsFragment()
+        )
 
-            GlobalScope.launch(Dispatchers.Main) {
-                (0..10).forEach { idx ->
-                    val prefix = getString(R.string.text_connecting_prefix)
-                    val suffix = ".".repeat(idx % 4)
-                    val status = prefix + suffix
+        // Setup pager, swiping left and right.
+        val pager = FragmentPager(supportFragmentManager)
 
-                    text_status.text = status
-
-                    delay(500)
-                }
-
-                startActivity(Intent(this@MainActivity, DataActivity::class.java))
-
-                connect_indicator.visibility = View.GONE
-                button_connect.isEnabled = true
-                text_status.text = ""
-            }
+        fragments.forEach { (_, fragment) ->
+            pager += fragment
         }
+
+        view_pager.adapter = pager
+
+        // Setup tabs.
+        tab_layout.setupWithViewPager(view_pager)
+
+        fragments.forEachIndexed { idx, (icon, _) ->
+            tab_layout.getTabAt(idx)?.icon = icon
+        }
+
+        // Setup tab coloring.
+        val tabUnselected = getColor(applicationContext, R.color.color_icon_unselected)
+        val tabSelected = getColor(applicationContext, R.color.color_icon_selected)
+
+        tab_layout.addOnTabSelectedListener(
+            ColoredTabListener(
+                tabUnselectedColorTint = tabUnselected,
+                tabSelectedColorTint = tabSelected
+            )
+        )
     }
 }
