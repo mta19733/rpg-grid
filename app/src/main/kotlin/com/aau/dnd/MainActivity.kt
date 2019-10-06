@@ -1,10 +1,11 @@
 package com.aau.dnd
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getColor
-import com.aau.dnd.util.ColoredTabListener
+import androidx.fragment.app.Fragment
 import com.aau.dnd.util.FragmentPager
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.tab_layout
 import kotlinx.android.synthetic.main.activity_main.view_pager
 
@@ -22,7 +23,16 @@ class MainActivity : AppCompatActivity() {
             getDrawable(R.drawable.ic_settings) to SettingsFragment()
         )
 
-        // Setup pager, swiping left and right.
+        setupPager(fragments)
+        setupTabs(fragments)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        selectFirstTab()
+    }
+
+    private fun setupPager(fragments: List<Pair<*, Fragment>>) {
         val pager = FragmentPager(supportFragmentManager)
 
         fragments.forEach { (_, fragment) ->
@@ -30,23 +40,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         view_pager.adapter = pager
+    }
 
-        // Setup tabs.
+    private fun setupTabs(fragments: List<Pair<Drawable?, Fragment>>) {
         tab_layout.setupWithViewPager(view_pager)
 
-        fragments.forEachIndexed { idx, (icon, _) ->
-            tab_layout.getTabAt(idx)?.icon = icon
-        }
+        fragments
+            .mapNotNull { (icon, _) -> icon }
+            .mapIndexedNotNull { idx, icon ->
+                tab_layout.getTabAt(idx)?.to(icon)
+            }
+            .forEach { (tab, icon) ->
+                tab.icon = icon
+            }
+    }
 
-        // Setup tab coloring.
-        val tabUnselected = getColor(applicationContext, R.color.color_icon_unselected)
-        val tabSelected = getColor(applicationContext, R.color.color_icon_selected)
-
-        tab_layout.addOnTabSelectedListener(
-            ColoredTabListener(
-                tabUnselectedColorTint = tabUnselected,
-                tabSelectedColorTint = tabSelected
-            )
-        )
+    private fun selectFirstTab() {
+        tab_layout
+            .getTabAt(0)
+            ?.also(TabLayout.Tab::select)
     }
 }
