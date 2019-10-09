@@ -7,6 +7,7 @@ import com.polidea.rxandroidble2.RxBleClient.State
 import com.polidea.rxandroidble2.scan.ScanResult
 import com.polidea.rxandroidble2.scan.ScanSettings
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class BluetoothService(
@@ -16,11 +17,18 @@ class BluetoothService(
     private val client: RxBleClient
 ) {
 
+    val devices: List<Device>
+        get() = scannedDevices.toList()
+
     val enabled: Boolean
         get() = adapter.isEnabled
 
-    fun scan(): Observable<Device> = if (client.state == State.READY) {
-        scanInternal()
+    private val scannedDeviceMacs = mutableSetOf<String>()
+    private val scannedDevices = mutableListOf<Device>()
+
+    fun scanDevices(): Observable<Device> = if (State.READY == client.state) {
+        clearDevices()
+        startScan()
     } else {
         Observable.error(
             BluetoothException("Bluetooth is not ready")
@@ -40,8 +48,14 @@ class BluetoothService(
         .Builder()
         .build()
 
-    private fun scanInternal() = client
+    private fun clearDevices() {
+        scannedDeviceMacs.clear()
+        scannedDevices.clear()
+    }
+
+    private fun startScan() = client
         .scanBleDevices(scanSettings())
+        .subscribeOn(Schedulers.io())
         .map(::mapScanResult)
         .takeUntil(
             Observable.timer(
@@ -49,4 +63,11 @@ class BluetoothService(
                 TimeUnit.MILLISECONDS
             )
         )
+        .filter { device ->
+            !scannedDeviceMacs.contains(device.mac)
+        }
+        .doOnNext { device ->
+            scannedDeviceMacs.add(device.mac)
+            scannedDevices.add(device)
+        }
 }

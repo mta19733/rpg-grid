@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aau.dnd.R
 
 class DeviceRecyclerViewAdapter(
+    devices: Iterable<Device>,
     private val onClick: (device: Device) -> Unit,
     private val context: Context
 ) : RecyclerView.Adapter<DeviceViewHolder>() {
 
-    // A separate set of macs is maintained to keep devices unique.
-    private val deviceMacs = mutableSetOf<String>()
-    private val devices = mutableListOf<Device>()
+    private val devices = devices.toMutableList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -60,22 +59,14 @@ class DeviceRecyclerViewAdapter(
 
     fun clearDevices() {
         val previousSize = devices.size
-
-        deviceMacs.clear()
         devices.clear()
-
         notifyItemRangeRemoved(0, previousSize)
     }
 
     fun addDevice(device: Device) {
         val previousSize = devices.size
-
-        if (device.mac !in deviceMacs) {
-            deviceMacs.add(device.mac)
-            devices.add(device)
-
-            notifyItemInserted(previousSize)
-        }
+        devices.add(device)
+        notifyItemInserted(previousSize)
     }
 
     private fun handleClick(holder: DeviceViewHolder) {

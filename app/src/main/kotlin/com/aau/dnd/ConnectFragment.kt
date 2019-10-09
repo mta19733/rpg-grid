@@ -18,7 +18,6 @@ import com.aau.dnd.util.ctx
 import com.aau.dnd.util.toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_connect.refresh_devices
 import kotlinx.android.synthetic.main.fragment_connect.view.list_devices
 import kotlinx.android.synthetic.main.fragment_connect.view.refresh_devices
@@ -38,6 +37,7 @@ class ConnectFragment : Fragment() {
         bluetoothService = ctx.bluetoothService
 
         deviceAdapter = DeviceRecyclerViewAdapter(
+            devices = bluetoothService.devices,
             onClick = ::handleConnect,
             context = requireContext()
         )
@@ -84,16 +84,13 @@ class ConnectFragment : Fragment() {
     }
 
     private fun refreshDevices(refresh: ColoredSwipeRefreshLayout) {
-        scanDevices?.dispose()
-
         deviceAdapter.clearDevices()
 
-        scanDevices = ctx
-            .bluetoothService
-            .scan()
-            .subscribeOn(Schedulers.io())
+        scanDevices?.dispose()
+        scanDevices = bluetoothService
+            .scanDevices()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete {
+            .doFinally {
                 refresh.isRefreshing = false
             }
             .subscribe({ device ->
