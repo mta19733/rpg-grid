@@ -31,9 +31,15 @@ class BluetoothService(
         startScan()
     } else {
         Observable.error(
-            BluetoothException("Bluetooth is not ready")
+            Exception("Bluetooth is not ready")
         )
     }
+
+    fun connect(device: Device): Observable<BluetoothConnection> = client
+        .getBleDevice(device.mac)
+        .establishConnection(false)
+        .subscribeOn(Schedulers.io())
+        .map(::BluetoothConnection)
 
     private fun mapScanResult(result: ScanResult) = result
         .bleDevice

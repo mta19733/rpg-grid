@@ -28,6 +28,7 @@ class ConnectFragment : Fragment() {
     private lateinit var deviceAdapter: DeviceRecyclerViewAdapter
 
     private var scanDevices: Disposable? = null
+    private var connection: Disposable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +49,9 @@ class ConnectFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+
         scanDevices?.dispose()
+        connection?.dispose()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -77,7 +80,15 @@ class ConnectFragment : Fragment() {
 
     private fun handleConnect(device: Device) {
         if (bluetoothService.enabled) {
-            toast("Connecting to ${device.mac}, name: ${device.name}")
+            connection = bluetoothService
+                .connect(device)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ connection ->
+                    toast("Connected to device $device, via $connection")
+                }, { error ->
+                    Log.e(TAG, "Could not connect to device $device", error)
+                })
+
         } else {
             requestBluetooth()
         }
