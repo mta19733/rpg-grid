@@ -12,6 +12,8 @@ class DeviceRecyclerViewAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<DeviceViewHolder>() {
 
+    // A separate set of macs is maintained to keep devices unique.
+    private val deviceMacs = mutableSetOf<String>()
     private val devices = mutableListOf<Device>()
 
     override fun onCreateViewHolder(
@@ -27,8 +29,9 @@ class DeviceRecyclerViewAdapter(
             )
 
         val holder = DeviceViewHolder(
+            view = view,
             name = view.findViewById(R.id.name),
-            view = view
+            mac = view.findViewById(R.id.mac)
         )
 
         view.setOnClickListener {
@@ -44,18 +47,35 @@ class DeviceRecyclerViewAdapter(
         val animation = loadAnimation(context, android.R.anim.slide_in_left)
 
         holder.itemView.startAnimation(animation)
-        holder.name.text = devices[position].name
+
+        devices[position].run {
+            holder.name.text = name
+            holder.mac.text = mac
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: DeviceViewHolder) {
         holder.itemView.clearAnimation()
     }
 
-    fun setDevices(devices: Iterable<Device>) {
-        this.devices.clear()
-        this.devices.addAll(devices)
+    fun clearDevices() {
+        val previousSize = devices.size
 
-        notifyDataSetChanged()
+        deviceMacs.clear()
+        devices.clear()
+
+        notifyItemRangeRemoved(0, previousSize)
+    }
+
+    fun addDevice(device: Device) {
+        val previousSize = devices.size
+
+        if (device.mac !in deviceMacs) {
+            deviceMacs.add(device.mac)
+            devices.add(device)
+
+            notifyItemInserted(previousSize)
+        }
     }
 
     private fun handleClick(holder: DeviceViewHolder) {

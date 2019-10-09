@@ -1,11 +1,17 @@
 package com.aau.dnd.util
 
-import android.app.Activity
+import android.app.Application
+import androidx.fragment.app.Fragment
 import com.aau.dnd.core.DndGridContext
 
-val Activity.ctx: DndGridContext
-    get(): DndGridContext = if (application is DndGridContext) {
-        application as DndGridContext
-    } else {
-        throw IllegalStateException("Application context could not be retrieved")
-    }
+val Fragment.ctx
+    get(): DndGridContext = activity
+        ?.application
+        ?.let<Application, DndGridContext?> { application ->
+            if (application is DndGridContext) {
+                application
+            } else {
+                null
+            }
+        }
+        ?: throw IllegalStateException("Application context could not be retrieved in fragment")

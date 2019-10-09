@@ -16,4 +16,5 @@
       android:scrollbars="vertical"
     />
   </com.aau.dnd.util.ColoredSwipeRefreshLayout>
+
 </RelativeLayout>
