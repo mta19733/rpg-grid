@@ -1,16 +1,14 @@
 package com.aau.dnd
 
-import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.button_connect
-import kotlinx.android.synthetic.main.activity_main.connect_indicator
-import kotlinx.android.synthetic.main.activity_main.text_status
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
+import com.aau.dnd.util.FragmentPager
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_main.tab_layout
+import kotlinx.android.synthetic.main.activity_main.view_pager
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,27 +17,47 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        button_connect.setOnClickListener {
-            connect_indicator.visibility = View.VISIBLE
-            button_connect.isEnabled = false
+        val fragments = listOf(
+            getDrawable(R.drawable.ic_bluetooth) to ConnectFragment(),
+            getDrawable(R.drawable.ic_videogame_asset) to PlayFragment(),
+            getDrawable(R.drawable.ic_settings) to SettingsFragment()
+        )
 
-            GlobalScope.launch(Dispatchers.Main) {
-                (0..10).forEach { idx ->
-                    val prefix = getString(R.string.text_connecting_prefix)
-                    val suffix = ".".repeat(idx % 4)
-                    val status = prefix + suffix
+        setupPager(fragments)
+        setupTabs(fragments)
+    }
 
-                    text_status.text = status
+    override fun onResume() {
+        super.onResume()
+        selectFirstTab()
+    }
 
-                    delay(500)
-                }
+    private fun setupPager(fragments: List<Pair<*, Fragment>>) {
+        val pager = FragmentPager(supportFragmentManager)
 
-                startActivity(Intent(this@MainActivity, DataActivity::class.java))
-
-                connect_indicator.visibility = View.GONE
-                button_connect.isEnabled = true
-                text_status.text = ""
-            }
+        fragments.forEach { (_, fragment) ->
+            pager += fragment
         }
+
+        view_pager.adapter = pager
+    }
+
+    private fun setupTabs(fragments: List<Pair<Drawable?, Fragment>>) {
+        tab_layout.setupWithViewPager(view_pager)
+
+        fragments
+            .mapNotNull { (icon, _) -> icon }
+            .mapIndexedNotNull { idx, icon ->
+                tab_layout.getTabAt(idx)?.to(icon)
+            }
+            .forEach { (tab, icon) ->
+                tab.icon = icon
+            }
+    }
+
+    private fun selectFirstTab() {
+        tab_layout
+            .getTabAt(0)
+            ?.also(TabLayout.Tab::select)
     }
 }
