@@ -1,4 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">D&amp;D Grid</string>
   <string name="device_unknown_name">Unknown</string>
+  <string
+    name="device_uuid"
+    tools:ignore="TypographyDashes"
+  >
+    83d21756-2d5e-466c-9fcb-8c0f5149739b
+  </string>
+  <string name="button_debug_send">Send</string>
+  <string name="button_debug_read">Read</string>
 </resources>

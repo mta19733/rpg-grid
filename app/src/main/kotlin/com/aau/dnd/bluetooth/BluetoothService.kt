@@ -1,9 +1,11 @@
 package com.aau.dnd.bluetooth
 
 import android.bluetooth.BluetoothAdapter
+import android.os.ParcelUuid
 import com.aau.dnd.device.Device
 import com.polidea.rxandroidble2.RxBleClient
 import com.polidea.rxandroidble2.RxBleClient.State
+import com.polidea.rxandroidble2.scan.ScanFilter
 import com.polidea.rxandroidble2.scan.ScanResult
 import com.polidea.rxandroidble2.scan.ScanSettings
 import io.reactivex.Observable
@@ -13,6 +15,7 @@ import java.util.concurrent.TimeUnit
 class BluetoothService(
     private val scanDurationMillis: Long,
     private val unknownDeviceName: String,
+    private val deviceUUID: ParcelUuid,
     private val adapter: BluetoothAdapter,
     private val client: RxBleClient
 ) {
@@ -54,13 +57,21 @@ class BluetoothService(
         .Builder()
         .build()
 
+    private fun scanFilter() = ScanFilter
+        .Builder()
+        .setServiceUuid(deviceUUID)
+        .build()
+
     private fun clearDevices() {
         scannedDeviceMacs.clear()
         scannedDevices.clear()
     }
 
     private fun startScan() = client
-        .scanBleDevices(scanSettings())
+        .scanBleDevices(
+            scanSettings(),
+            scanFilter()
+        )
         .subscribeOn(Schedulers.io())
         .map(::mapScanResult)
         .takeUntil(

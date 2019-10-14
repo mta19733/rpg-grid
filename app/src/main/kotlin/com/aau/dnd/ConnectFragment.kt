@@ -8,8 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aau.dnd.bluetooth.BluetoothConnection
 import com.aau.dnd.bluetooth.BluetoothService
 import com.aau.dnd.device.Device
 import com.aau.dnd.device.DeviceRecyclerViewAdapter
@@ -19,6 +21,8 @@ import com.aau.dnd.util.toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_connect.refresh_devices
+import kotlinx.android.synthetic.main.fragment_connect.view.button_read
+import kotlinx.android.synthetic.main.fragment_connect.view.button_send
 import kotlinx.android.synthetic.main.fragment_connect.view.list_devices
 import kotlinx.android.synthetic.main.fragment_connect.view.refresh_devices
 
@@ -26,9 +30,10 @@ class ConnectFragment : Fragment() {
 
     private lateinit var bluetoothService: BluetoothService
     private lateinit var deviceAdapter: DeviceRecyclerViewAdapter
+    private var connection: BluetoothConnection? = null
 
-    private var scanDevices: Disposable? = null
-    private var connection: Disposable? = null
+    private var scanDevicesDisposable: Disposable? = null
+    private var connectionDisposable: Disposable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,15 +48,41 @@ class ConnectFragment : Fragment() {
             context = requireContext()
         )
 
-        return inflate(inflater, container)
+        val view = inflate(inflater, container)
             .apply(::setupDeviceList)
+
+        view.button_read.setOnClickListener {
+            connection?.apply {
+                read()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ message ->
+                        toast(String(message), duration = Toast.LENGTH_SHORT)
+                    }, { error ->
+                        Log.e(TAG, "Could not read message", error)
+                    })
+            }
+        }
+
+        view.button_send.setOnClickListener {
+            connection?.apply {
+                send()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ message ->
+                        toast(String(message), duration = Toast.LENGTH_SHORT)
+                    }, { error ->
+                        Log.e(TAG, "Could not send message", error)
+                    })
+            }
+        }
+
+        return view
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        scanDevices?.dispose()
-        connection?.dispose()
+        scanDevicesDisposable?.dispose()
+        connectionDisposable?.dispose()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,11 +111,16 @@ class ConnectFragment : Fragment() {
 
     private fun handleConnect(device: Device) {
         if (bluetoothService.enabled) {
-            connection = bluetoothService
+            connectionDisposable = bluetoothService
                 .connect(device)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ connection ->
-                    toast("Connected to device $device, via $connection")
+                    toast("Connected to device")
+
+                    this.connection = connection
+
+                    view?.button_read?.isEnabled = true
+                    view?.button_send?.isEnabled = true
                 }, { error ->
                     Log.e(TAG, "Could not connect to device $device", error)
                 })
@@ -97,8 +133,8 @@ class ConnectFragment : Fragment() {
     private fun refreshDevices(refresh: ColoredSwipeRefreshLayout) {
         deviceAdapter.clearDevices()
 
-        scanDevices?.dispose()
-        scanDevices = bluetoothService
+        scanDevicesDisposable?.dispose()
+        scanDevicesDisposable = bluetoothService
             .scanDevices()
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally {
