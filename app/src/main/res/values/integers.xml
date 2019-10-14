@@ -1,0 +1,3 @@
+<resources>
+  <integer name="scan_duration_millis">10000</integer>
+</resources>

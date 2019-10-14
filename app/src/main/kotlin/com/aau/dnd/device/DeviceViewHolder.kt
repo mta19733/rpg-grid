@@ -4,4 +4,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class DeviceViewHolder(val name: TextView, view: View) : RecyclerView.ViewHolder(view)
+class DeviceViewHolder(
+    view: View,
+    val name: TextView,
+    val mac: TextView
+) : RecyclerView.ViewHolder(view)

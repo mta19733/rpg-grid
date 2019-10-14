@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aau.dnd.R
 
 class DeviceRecyclerViewAdapter(
+    devices: Iterable<Device>,
     private val onClick: (device: Device) -> Unit,
     private val context: Context
 ) : RecyclerView.Adapter<DeviceViewHolder>() {
 
-    private val devices = mutableListOf<Device>()
+    private val devices = devices.toMutableList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,8 +28,9 @@ class DeviceRecyclerViewAdapter(
             )
 
         val holder = DeviceViewHolder(
+            view = view,
             name = view.findViewById(R.id.name),
-            view = view
+            mac = view.findViewById(R.id.mac)
         )
 
         view.setOnClickListener {
@@ -44,18 +46,27 @@ class DeviceRecyclerViewAdapter(
         val animation = loadAnimation(context, android.R.anim.slide_in_left)
 
         holder.itemView.startAnimation(animation)
-        holder.name.text = devices[position].name
+
+        devices[position].run {
+            holder.name.text = name
+            holder.mac.text = mac
+        }
     }
 
     override fun onViewDetachedFromWindow(holder: DeviceViewHolder) {
         holder.itemView.clearAnimation()
     }
 
-    fun setDevices(devices: Iterable<Device>) {
-        this.devices.clear()
-        this.devices.addAll(devices)
+    fun clearDevices() {
+        val previousSize = devices.size
+        devices.clear()
+        notifyItemRangeRemoved(0, previousSize)
+    }
 
-        notifyDataSetChanged()
+    fun addDevice(device: Device) {
+        val previousSize = devices.size
+        devices.add(device)
+        notifyItemInserted(previousSize)
     }
 
     private fun handleClick(holder: DeviceViewHolder) {
