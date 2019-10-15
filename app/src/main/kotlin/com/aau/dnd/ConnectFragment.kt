@@ -1,6 +1,5 @@
 package com.aau.dnd
 
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
@@ -8,32 +7,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.aau.dnd.bluetooth.BluetoothConnection
-import com.aau.dnd.bluetooth.BluetoothService
-import com.aau.dnd.device.Device
-import com.aau.dnd.device.DeviceRecyclerViewAdapter
-import com.aau.dnd.util.ColoredSwipeRefreshLayout
+import com.aau.dnd.bluetooth.BluetoothState
+import com.aau.dnd.bluetooth.RxBluetoothService
 import com.aau.dnd.util.ctx
 import com.aau.dnd.util.toast
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_connect.refresh_devices
-import kotlinx.android.synthetic.main.fragment_connect.view.button_read
+import kotlinx.android.synthetic.main.fragment_connect.view.button_connect
 import kotlinx.android.synthetic.main.fragment_connect.view.button_send
-import kotlinx.android.synthetic.main.fragment_connect.view.list_devices
-import kotlinx.android.synthetic.main.fragment_connect.view.refresh_devices
 
 class ConnectFragment : Fragment() {
 
-    private lateinit var bluetoothService: BluetoothService
-    private lateinit var deviceAdapter: DeviceRecyclerViewAdapter
+    private lateinit var bluetoothService: RxBluetoothService
+
     private var connection: BluetoothConnection? = null
 
-    private var scanDevicesDisposable: Disposable? = null
-    private var connectionDisposable: Disposable? = null
+    // Everything related to connection can be disposed at any time.
+    private val connectionDisposables = CompositeDisposable()
+
+    // State should be observed all the time, so it is separate.
+    private var stateDisposable: Disposable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,38 +37,16 @@ class ConnectFragment : Fragment() {
     ): View {
         bluetoothService = ctx.bluetoothService
 
-        deviceAdapter = DeviceRecyclerViewAdapter(
-            devices = bluetoothService.devices,
-            onClick = ::handleConnect,
-            context = requireContext()
+        val view = inflater.inflate(
+            R.layout.fragment_connect,
+            container,
+            false
         )
 
-        val view = inflate(inflater, container)
-            .apply(::setupDeviceList)
+        observeState()
 
-        view.button_read.setOnClickListener {
-            connection?.apply {
-                read()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ message ->
-                        toast(String(message), duration = Toast.LENGTH_SHORT)
-                    }, { error ->
-                        Log.e(TAG, "Could not read message", error)
-                    })
-            }
-        }
-
-        view.button_send.setOnClickListener {
-            connection?.apply {
-                send()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ message ->
-                        toast(String(message), duration = Toast.LENGTH_SHORT)
-                    }, { error ->
-                        Log.e(TAG, "Could not send message", error)
-                    })
-            }
-        }
+        view.button_connect.setOnClickListener { handleConnect() }
+        view.button_send.setOnClickListener { handleSend() }
 
         return view
     }
@@ -81,26 +54,14 @@ class ConnectFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
 
-        scanDevicesDisposable?.dispose()
-        connectionDisposable?.dispose()
+        connectionDisposables.clear()
+        stateDisposable?.dispose()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (REQUEST_ENABLE_BLUETOOTH == requestCode) {
-            if (Activity.RESULT_OK == resultCode) {
-                refreshDevices(refresh_devices)
-            } else {
-                refresh_devices.isRefreshing = false
-                toast("Bluetooth must be enabled to scan devices")
-            }
-        }
+    private fun cleanupBluetoothBadState() {
+        connectionDisposables.clear()
+        connection = null
     }
-
-    private fun inflate(inflater: LayoutInflater, container: ViewGroup?) = inflater.inflate(
-        R.layout.fragment_connect,
-        container,
-        false
-    )
 
     private fun requestBluetooth() {
         startActivityForResult(
@@ -109,59 +70,64 @@ class ConnectFragment : Fragment() {
         )
     }
 
-    private fun handleConnect(device: Device) {
-        if (bluetoothService.enabled) {
-            connectionDisposable = bluetoothService
-                .connect(device)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ connection ->
-                    toast("Connected to device")
-
-                    this.connection = connection
-
-                    view?.button_read?.isEnabled = true
-                    view?.button_send?.isEnabled = true
-                }, { error ->
-                    Log.e(TAG, "Could not connect to device $device", error)
-                })
-
-        } else {
-            requestBluetooth()
-        }
-    }
-
-    private fun refreshDevices(refresh: ColoredSwipeRefreshLayout) {
-        deviceAdapter.clearDevices()
-
-        scanDevicesDisposable?.dispose()
-        scanDevicesDisposable = bluetoothService
-            .scanDevices()
-            .observeOn(AndroidSchedulers.mainThread())
-            .doFinally {
-                refresh.isRefreshing = false
+    private fun handleBluetoothState(state: BluetoothState) {
+        when (state) {
+            BluetoothState.UNAVAILABLE -> {
+                cleanupBluetoothBadState()
+                toast(getString(R.string.bluetooth_unavailable))
             }
-            .subscribe({ device ->
-                deviceAdapter.addDevice(device)
-            }, { error ->
-                Log.e(TAG, "Could not scan devices", error)
-            })
-    }
+            BluetoothState.OFF -> {
+                cleanupBluetoothBadState()
+                toast(getString(R.string.bluetooth_off))
 
-    private fun handleRefresh() {
-        if (bluetoothService.enabled) {
-            refreshDevices(refresh_devices)
-        } else {
-            requestBluetooth()
+                requestBluetooth()
+            }
+            BluetoothState.ON -> {
+                view?.button_connect?.isEnabled = true
+            }
         }
     }
 
-    private fun setupDeviceList(view: View) {
-        view.list_devices.layoutManager = LinearLayoutManager(requireContext())
-        view.list_devices.adapter = deviceAdapter
+    private fun observeState() {
+        stateDisposable = bluetoothService
+            .observeState()
+            .subscribe(
+                ::handleBluetoothState,
+                ::handleError
+            )
+    }
 
-        view.refresh_devices.setOnRefreshListener {
-            handleRefresh()
-        }
+    private fun handleConnection(connection: BluetoothConnection) {
+        this.connection = connection
+        view?.button_send?.isEnabled = true
+    }
+
+    private fun handleError(error: Throwable) {
+        Log.e(TAG, "Unhandled error", error)
+    }
+
+    private fun handleConnect() {
+        bluetoothService
+            .connect()
+            .subscribe(
+                ::handleConnection,
+                ::handleError
+            )
+            ?.also { disposable ->
+                connectionDisposables.add(disposable)
+            }
+    }
+
+    private fun handleSend() {
+        connection
+            ?.send("Hello World")
+            ?.subscribe(
+                { response -> toast(response) },
+                ::handleError
+            )
+            ?.also { disposable ->
+                connectionDisposables.add(disposable)
+            }
     }
 }
 

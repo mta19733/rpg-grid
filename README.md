@@ -26,3 +26,8 @@ Navigate to root project directory and run the following:
 
 After this is done, navigate to `app/build/outputs/apk/release` and grab the 
 APK files.
+
+## Links
+* [StackOverflow BLE tips](https://stackoverflow.com/questions/17870189/android-4-3-bluetooth-low-energy-unstable).
+* [Reddit BLE tips](https://www.reddit.com/r/androiddev/comments/4ofnbp/bluetooth_ble_development_is_miserable_on_android).
+* [BLE example](https://github.com/Polidea/RxAndroidBle/blob/master/sample/src/main/java/com/polidea/rxandroidble2/sample/example2_connection/ConnectionExampleActivity.java).

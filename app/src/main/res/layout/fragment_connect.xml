@@ -20,18 +20,18 @@
   </com.aau.dnd.util.ColoredSwipeRefreshLayout>
 
   <Button
-    android:id="@+id/button_send"
+    android:id="@+id/button_connect"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/button_debug_send"
+    android:text="@string/button_debug_connect"
     android:enabled="false"
   />
 
   <Button
-    android:id="@+id/button_read"
+    android:id="@+id/button_send"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/button_debug_read"
+    android:text="@string/button_debug_send"
     android:enabled="false"
   />
 </LinearLayout>

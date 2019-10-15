@@ -1,8 +1,8 @@
 package com.aau.dnd.core
 
-import com.aau.dnd.bluetooth.BluetoothService
+import com.aau.dnd.bluetooth.RxBluetoothService
 
 interface DndGridContext {
 
-    val bluetoothService: BluetoothService
+    val bluetoothService: RxBluetoothService
 }
