@@ -58,7 +58,6 @@ class RxBluetoothService(
         return result.scanRecord.serviceUuids?.contains(parcelServiceId) ?: false
     }
 
-
     private fun connect(device: RxBleDevice) = device
         .establishConnection(false)
         .subscribeOn(Schedulers.io())
@@ -68,7 +67,9 @@ class RxBluetoothService(
             RxBluetoothConnection(
                 stringCharacteristicId = stringCharacteristicId,
                 writeReties = writeReties,
-                connection = connection
+                connection = connection,
+                name = device.name ?: device.macAddress,
+                mac = device.macAddress
             )
         }
 }

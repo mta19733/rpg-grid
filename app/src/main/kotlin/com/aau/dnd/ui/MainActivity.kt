@@ -5,12 +5,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.aau.dnd.R
+import com.aau.dnd.core.bluetooth.BluetoothConnection
+import com.aau.dnd.core.bluetooth.BluetoothService
+import com.aau.dnd.core.bluetooth.NullBluetoothConnection
 import com.aau.dnd.util.FragmentPager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.tab_layout
 import kotlinx.android.synthetic.main.activity_main.view_pager
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
+
+    private var bluetoothConnection: BluetoothConnection = NullBluetoothConnection
+    private val bluetoothService by inject<BluetoothService>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +37,11 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         selectFirstTab()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
     private fun setupPager(fragments: List<Pair<*, Fragment>>) {

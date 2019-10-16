@@ -1,6 +1,5 @@
 package com.aau.dnd
 
-import com.aau.dnd.R
 import com.aau.dnd.core.bluetooth.BluetoothService
 import com.aau.dnd.core.bluetooth.RxBluetoothService
 import com.polidea.rxandroidble2.RxBleClient

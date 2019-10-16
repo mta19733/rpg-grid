@@ -1,5 +1,6 @@
 package com.aau.dnd.ui
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
@@ -20,12 +21,13 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_connect.view.button_connect
 import kotlinx.android.synthetic.main.fragment_connect.view.button_send
+import kotlinx.android.synthetic.main.fragment_connect.view.device_mac
+import kotlinx.android.synthetic.main.fragment_connect.view.device_name
 import org.koin.android.ext.android.inject
 
 class ConnectFragment : Fragment() {
 
     private val bluetoothService by inject<BluetoothService>()
-
     private var connection: BluetoothConnection = NullBluetoothConnection
 
     // Everything related to connection can be disposed at any time.
@@ -47,10 +49,17 @@ class ConnectFragment : Fragment() {
 
         observeState()
 
-        view.button_connect.setOnClickListener { handleConnect() }
-        view.button_connect.isEnabled = BluetoothState.ON == bluetoothService.state
+        view.button_connect.setOnClickListener {
+            if (NullBluetoothConnection == connection) {
+                handleConnect()
+            } else {
+                handleDisconnect()
+            }
+        }
 
-        view.button_send.setOnClickListener { handleSend() }
+        view.button_send.setOnClickListener {
+            handleSend()
+        }
 
         return view
     }
@@ -62,12 +71,20 @@ class ConnectFragment : Fragment() {
         stateDisposable?.dispose()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (REQUEST_ENABLE_BLUETOOTH == requestCode && Activity.RESULT_OK == resultCode) {
+            handleConnect()
+        }
+    }
+
     private fun cleanupBluetoothBadState() {
         connectionDisposables.clear()
         connection = NullBluetoothConnection
 
-        view?.button_connect?.isEnabled = false
-        view?.button_send?.isEnabled = false
+        view?.apply {
+            button_connect.text = getString(R.string.button_connect)
+            button_send.isEnabled = false
+        }
     }
 
     private fun requestBluetooth() {
@@ -78,20 +95,14 @@ class ConnectFragment : Fragment() {
     }
 
     private fun handleBluetoothState(state: BluetoothState) {
-        when (state) {
-            BluetoothState.UNAVAILABLE -> {
-                cleanupBluetoothBadState()
-                toast(getString(R.string.bluetooth_unavailable))
-            }
-            BluetoothState.OFF -> {
-                cleanupBluetoothBadState()
-                toast(getString(R.string.bluetooth_off))
+        if (BluetoothState.UNAVAILABLE == state) {
+            cleanupBluetoothBadState()
+            toast(getString(R.string.bluetooth_unavailable))
+        } else if (BluetoothState.OFF == state) {
+            cleanupBluetoothBadState()
+            toast(getString(R.string.bluetooth_off))
 
-                requestBluetooth()
-            }
-            BluetoothState.ON -> {
-                view?.button_connect?.isEnabled = true
-            }
+            requestBluetooth()
         }
     }
 
@@ -108,12 +119,21 @@ class ConnectFragment : Fragment() {
     private fun handleConnection(connection: BluetoothConnection) {
         this.connection = connection
 
-        view?.button_connect?.isEnabled = false
-        view?.button_send?.isEnabled = true
+        view?.apply {
+            device_name.text = connection.name
+            device_mac.text = connection.mac
+
+            button_connect.text = getString(R.string.button_disconnect)
+            button_send.isEnabled = true
+        }
     }
 
     private fun handleError(error: Throwable) {
         Log.e(TAG, "Unhandled error", error)
+    }
+
+    private fun handleDisconnect() {
+        connectionDisposables.clear()
     }
 
     private fun handleConnect() {

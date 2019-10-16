@@ -6,10 +6,13 @@ import io.reactivex.schedulers.Schedulers
 import java.util.UUID
 
 class RxBluetoothConnection(
+    override val name: String,
+    override val mac: String,
     private val stringCharacteristicId: UUID,
     private val writeReties: Int,
     private val connection: RxBleConnection
 ) : BluetoothConnection {
+
 
     override fun send(data: String): Single<String> = connection
         .writeCharacteristic(stringCharacteristicId, data.toByteArray())

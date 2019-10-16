@@ -4,7 +4,9 @@ import io.reactivex.Single
 
 object NullBluetoothConnection : BluetoothConnection {
 
-    override fun send(data: String): Single<String>  = Single.error(
-        Throwable("Null connection can't send data")
-    )
+    override val name = ""
+
+    override val mac = ""
+
+    override fun send(data: String): Single<String> = Single.just("")
 }

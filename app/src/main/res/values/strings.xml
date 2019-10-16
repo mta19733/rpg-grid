@@ -13,7 +13,8 @@
   >
     2be82d7d-6dd9-40ee-8ee9-af581af0fc92
   </string>
-  <string name="button_debug_connect">Connect</string>
+  <string name="button_disconnect">Disconnect</string>
+  <string name="button_connect">Connect</string>
   <string name="button_debug_send">Send</string>
   <string name="bluetooth_unavailable">Bluetooth is not available on your device</string>
   <string name="bluetooth_off">Bluetooth is OFF</string>
