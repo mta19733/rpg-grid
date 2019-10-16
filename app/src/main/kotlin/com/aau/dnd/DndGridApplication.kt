@@ -1,4 +1,4 @@
-package com.aau.dnd.core
+package com.aau.dnd
 
 import com.aau.dnd.R
 import com.aau.dnd.core.bluetooth.BluetoothService
