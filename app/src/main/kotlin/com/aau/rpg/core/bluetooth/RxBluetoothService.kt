@@ -52,11 +52,8 @@ class RxBluetoothService(
         .Builder()
         .build()
 
-    private fun filter(result: ScanResult): Boolean {
-        System.err.println("About to filter ${result.bleDevice.name}")
-        System.err.println("${result.scanRecord.serviceUuids}")
-        return result.scanRecord.serviceUuids?.contains(parcelServiceId) ?: false
-    }
+    private fun filter(result: ScanResult): Boolean =
+        result.scanRecord.serviceUuids?.contains(parcelServiceId) ?: false
 
     private fun connect(device: RxBleDevice) = device
         .establishConnection(false)
