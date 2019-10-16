@@ -63,7 +63,7 @@ dependencies {
     implementation("org.koin:koin-android:2.0.1")
 
     // Google.
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("com.google.android.material:material:1.1.0-beta01")
 
     // Core, Android.
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
