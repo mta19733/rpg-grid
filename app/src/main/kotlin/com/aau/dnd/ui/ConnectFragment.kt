@@ -1,4 +1,4 @@
-package com.aau.dnd
+package com.aau.dnd.ui
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
@@ -8,21 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.aau.dnd.bluetooth.BluetoothConnection
-import com.aau.dnd.bluetooth.BluetoothState
-import com.aau.dnd.bluetooth.RxBluetoothService
+import com.aau.dnd.R
+import com.aau.dnd.core.bluetooth.BluetoothConnection
+import com.aau.dnd.core.bluetooth.BluetoothService
+import com.aau.dnd.core.bluetooth.BluetoothState
+import com.aau.dnd.core.bluetooth.NullBluetoothConnection
 import com.aau.dnd.util.toast
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_connect.view.button_connect
 import kotlinx.android.synthetic.main.fragment_connect.view.button_send
 import org.koin.android.ext.android.inject
 
 class ConnectFragment : Fragment() {
 
-    private val bluetoothService by inject<RxBluetoothService>()
+    private val bluetoothService by inject<BluetoothService>()
 
-    private var connection: BluetoothConnection? = null
+    private var connection: BluetoothConnection = NullBluetoothConnection
 
     // Everything related to connection can be disposed at any time.
     private val connectionDisposables = CompositeDisposable()
@@ -44,6 +48,8 @@ class ConnectFragment : Fragment() {
         observeState()
 
         view.button_connect.setOnClickListener { handleConnect() }
+        view.button_connect.isEnabled = BluetoothState.ON == bluetoothService.state
+
         view.button_send.setOnClickListener { handleSend() }
 
         return view
@@ -58,7 +64,10 @@ class ConnectFragment : Fragment() {
 
     private fun cleanupBluetoothBadState() {
         connectionDisposables.clear()
-        connection = null
+        connection = NullBluetoothConnection
+
+        view?.button_connect?.isEnabled = false
+        view?.button_send?.isEnabled = false
     }
 
     private fun requestBluetooth() {
@@ -89,6 +98,7 @@ class ConnectFragment : Fragment() {
     private fun observeState() {
         stateDisposable = bluetoothService
             .observeState()
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 ::handleBluetoothState,
                 ::handleError
@@ -97,6 +107,8 @@ class ConnectFragment : Fragment() {
 
     private fun handleConnection(connection: BluetoothConnection) {
         this.connection = connection
+
+        view?.button_connect?.isEnabled = false
         view?.button_send?.isEnabled = true
     }
 
@@ -105,28 +117,25 @@ class ConnectFragment : Fragment() {
     }
 
     private fun handleConnect() {
-        connectionDisposables.add(
-            bluetoothService
-                .connect()
-                .subscribe(
-                    ::handleConnection,
-                    ::handleError
-                )
-        )
+        connectionDisposables += bluetoothService
+            .connect()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                ::handleConnection,
+                ::handleError
+            )
     }
 
     private fun handleSendResponse(response: String) = toast(response)
 
     private fun handleSend() {
-        connection
-            ?.send("Hello World")
-            ?.subscribe(
+        connectionDisposables += connection
+            .send("Hello World")
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
                 ::handleSendResponse,
                 ::handleError
             )
-            ?.also { disposable ->
-                connectionDisposables.add(disposable)
-            }
     }
 }
 

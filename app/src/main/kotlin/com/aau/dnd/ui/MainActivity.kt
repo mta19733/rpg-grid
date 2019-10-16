@@ -1,9 +1,10 @@
-package com.aau.dnd
+package com.aau.dnd.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.aau.dnd.R
 import com.aau.dnd.util.FragmentPager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.tab_layout

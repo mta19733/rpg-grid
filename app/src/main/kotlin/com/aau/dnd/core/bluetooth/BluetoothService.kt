@@ -1,8 +1,13 @@
-package com.aau.dnd.bluetooth
+package com.aau.dnd.core.bluetooth
 
 import io.reactivex.Observable
 
 interface BluetoothService {
+
+    /**
+     * Current Bluetooth state.
+     */
+    val state: BluetoothState
 
     /**
      * Track Bluetooth state.

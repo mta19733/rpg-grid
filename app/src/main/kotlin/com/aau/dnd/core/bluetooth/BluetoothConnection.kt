@@ -1,4 +1,4 @@
-package com.aau.dnd.bluetooth
+package com.aau.dnd.core.bluetooth
 
 import io.reactivex.Single
 

@@ -1,4 +1,4 @@
-package com.aau.dnd.device
+package com.aau.dnd.core.device
 
 import android.content.Context
 import android.view.LayoutInflater

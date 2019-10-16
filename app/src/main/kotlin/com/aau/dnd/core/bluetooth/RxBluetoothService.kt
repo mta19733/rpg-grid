@@ -1,4 +1,4 @@
-package com.aau.dnd.bluetooth
+package com.aau.dnd.core.bluetooth
 
 import android.os.ParcelUuid
 import com.polidea.rxandroidble2.RxBleClient
@@ -7,7 +7,7 @@ import com.polidea.rxandroidble2.RxBleDevice
 import com.polidea.rxandroidble2.scan.ScanResult
 import com.polidea.rxandroidble2.scan.ScanSettings
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -23,18 +23,21 @@ class RxBluetoothService(
 
     private val parcelServiceId = ParcelUuid(serviceId)
 
+    override val state = mapState(client.state)
+
     override fun observeState(): Observable<BluetoothState> = client
         .observeStateChanges()
         .startWith(client.state)
-        .subscribeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
         .map(::mapState)
 
     override fun connect(): Observable<BluetoothConnection> = client
         .scanBleDevices(scanSettings())
-        .subscribeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
         .take(scanTimeoutMillis, TimeUnit.MILLISECONDS)
         .filter(::filter)
         .map(ScanResult::getBleDevice)
+        .take(1)
         .flatMap(::connect)
 
     private fun mapState(state: State) = when (state) {
@@ -49,11 +52,16 @@ class RxBluetoothService(
         .Builder()
         .build()
 
-    private fun filter(result: ScanResult) =
-        result.scanRecord.serviceUuids?.contains(parcelServiceId) ?: false
+    private fun filter(result: ScanResult): Boolean {
+        System.err.println("About to filter ${result.bleDevice.name}")
+        System.err.println("${result.scanRecord.serviceUuids}")
+        return result.scanRecord.serviceUuids?.contains(parcelServiceId) ?: false
+    }
+
 
     private fun connect(device: RxBleDevice) = device
         .establishConnection(false)
+        .subscribeOn(Schedulers.io())
         .delay(connectDelayMillis, TimeUnit.MILLISECONDS)
         .retry(connectRetries.toLong())
         .map { connection ->

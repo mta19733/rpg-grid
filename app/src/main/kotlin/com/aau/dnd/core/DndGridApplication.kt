@@ -1,7 +1,8 @@
 package com.aau.dnd.core
 
 import com.aau.dnd.R
-import com.aau.dnd.bluetooth.RxBluetoothService
+import com.aau.dnd.core.bluetooth.BluetoothService
+import com.aau.dnd.core.bluetooth.RxBluetoothService
 import com.polidea.rxandroidble2.RxBleClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -13,7 +14,7 @@ class DndGridApplication : android.app.Application() {
     override fun onCreate() {
         super.onCreate()
 
-        startCoin()
+        startKoin()
     }
 
     private fun createBluetoothService() = RxBluetoothService(
@@ -26,9 +27,9 @@ class DndGridApplication : android.app.Application() {
         client = RxBleClient.create(baseContext)
     )
 
-    private fun startCoin() {
+    private fun startKoin() {
         val mainModule = module {
-            single {
+            single<BluetoothService> {
                 createBluetoothService()
             }
         }
