@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools" package="com.aau.dnd"
 >
   <application
-    android:name="com.aau.dnd.core.DndGrid"
+    android:name="com.aau.dnd.core.DndGridApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:roundIcon="@mipmap/ic_launcher_round"

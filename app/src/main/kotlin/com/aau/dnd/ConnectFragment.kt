@@ -11,16 +11,16 @@ import androidx.fragment.app.Fragment
 import com.aau.dnd.bluetooth.BluetoothConnection
 import com.aau.dnd.bluetooth.BluetoothState
 import com.aau.dnd.bluetooth.RxBluetoothService
-import com.aau.dnd.util.ctx
 import com.aau.dnd.util.toast
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_connect.view.button_connect
 import kotlinx.android.synthetic.main.fragment_connect.view.button_send
+import org.koin.android.ext.android.inject
 
 class ConnectFragment : Fragment() {
 
-    private lateinit var bluetoothService: RxBluetoothService
+    private val bluetoothService by inject<RxBluetoothService>()
 
     private var connection: BluetoothConnection? = null
 
@@ -35,8 +35,6 @@ class ConnectFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        bluetoothService = ctx.bluetoothService
-
         val view = inflater.inflate(
             R.layout.fragment_connect,
             container,
@@ -107,22 +105,23 @@ class ConnectFragment : Fragment() {
     }
 
     private fun handleConnect() {
-        bluetoothService
-            .connect()
-            .subscribe(
-                ::handleConnection,
-                ::handleError
-            )
-            ?.also { disposable ->
-                connectionDisposables.add(disposable)
-            }
+        connectionDisposables.add(
+            bluetoothService
+                .connect()
+                .subscribe(
+                    ::handleConnection,
+                    ::handleError
+                )
+        )
     }
+
+    private fun handleSendResponse(response: String) = toast(response)
 
     private fun handleSend() {
         connection
             ?.send("Hello World")
             ?.subscribe(
-                { response -> toast(response) },
+                ::handleSendResponse,
                 ::handleError
             )
             ?.also { disposable ->
