@@ -1,5 +1,6 @@
-# RPG Grid [![CircleCI](https://circleci.com/gh/Edvinas01/dnd-grid.svg?style=svg&circle-token=6536e12c520e4c7231f7a4fd4e37d460a21ba614)](https://circleci.com/gh/Edvinas01/dnd-grid)
-Android application to control electrochromic display based RPG Grid.
+# RPG Grid [![CircleCI](https://circleci.com/gh/Edvinas01/rpg-grid.svg?style=svg&circle-token=5c03dc54e44329a22a9a97221ae0b4363951e5d8)](https://circleci.com/gh/Edvinas01/rpg-grid)
+Android application to control electrochromic display based, role-playing game 
+board.
 
 ## Prerequisites
 To build this project, the following tools are required:
