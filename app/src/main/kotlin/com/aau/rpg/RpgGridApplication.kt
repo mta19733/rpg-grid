@@ -1,14 +1,15 @@
-package com.aau.dnd
+package com.aau.rpg
 
-import com.aau.dnd.core.bluetooth.BluetoothService
-import com.aau.dnd.core.bluetooth.RxBluetoothService
+import android.app.Application
+import com.aau.rpg.core.bluetooth.BluetoothService
+import com.aau.rpg.core.bluetooth.RxBluetoothService
 import com.polidea.rxandroidble2.RxBleClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import java.util.UUID
 
-class DndGridApplication : android.app.Application() {
+class RpgGridApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -34,7 +35,7 @@ class DndGridApplication : android.app.Application() {
         }
 
         startKoin {
-            androidContext(this@DndGridApplication)
+            androidContext(this@RpgGridApplication)
             modules(mainModule)
         }
     }

@@ -1,4 +1,4 @@
-package com.aau.dnd.core.bluetooth
+package com.aau.rpg.core.bluetooth
 
 import android.os.ParcelUuid
 import com.polidea.rxandroidble2.RxBleClient

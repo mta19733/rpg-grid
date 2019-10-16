@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name">D&amp;D Grid</string>
+  <string name="app_name">RPG Grid</string>
   <string name="device_unknown_name">Unknown</string>
   <string
     name="service_id"

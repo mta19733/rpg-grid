@@ -1,4 +1,4 @@
-package com.aau.dnd.core.bluetooth
+package com.aau.rpg.core.bluetooth
 
 import com.polidea.rxandroidble2.RxBleConnection
 import io.reactivex.Single

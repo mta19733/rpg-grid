@@ -1,16 +1,16 @@
-package com.aau.dnd.ui
+package com.aau.rpg.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.aau.dnd.R
-import com.aau.dnd.core.bluetooth.BluetoothConnection
-import com.aau.dnd.core.bluetooth.BluetoothService
-import com.aau.dnd.core.bluetooth.BluetoothState
-import com.aau.dnd.core.bluetooth.NullBluetoothConnection
-import com.aau.dnd.util.FragmentPager
+import com.aau.rpg.R
+import com.aau.rpg.core.bluetooth.BluetoothConnection
+import com.aau.rpg.core.bluetooth.BluetoothService
+import com.aau.rpg.core.bluetooth.BluetoothState
+import com.aau.rpg.core.bluetooth.NullBluetoothConnection
+import com.aau.rpg.util.FragmentPager
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

@@ -1,11 +1,11 @@
-package com.aau.dnd.ui
+package com.aau.rpg.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.aau.dnd.R
+import com.aau.rpg.R
 
 class SettingsFragment : Fragment() {
 

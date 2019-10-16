@@ -1,4 +1,4 @@
-package com.aau.dnd.ui
+package com.aau.rpg.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.aau.dnd.R
-import com.aau.dnd.core.bluetooth.BluetoothConnection
-import com.aau.dnd.core.bluetooth.NullBluetoothConnection
-import com.aau.dnd.util.toast
+import com.aau.rpg.R
+import com.aau.rpg.core.bluetooth.BluetoothConnection
+import com.aau.rpg.core.bluetooth.NullBluetoothConnection
+import com.aau.rpg.util.toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
