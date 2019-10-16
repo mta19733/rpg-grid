@@ -1,4 +1,4 @@
-package com.aau.dnd
+package com.aau.rpg
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

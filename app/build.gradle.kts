@@ -59,9 +59,11 @@ dependencies {
     // Utilities.
     implementation("com.polidea.rxandroidble2:rxandroidble:1.10.2")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
+    implementation("org.koin:koin-android:2.0.1")
 
     // Google.
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("com.google.android.material:material:1.1.0-beta01")
 
     // Core, Android.
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")

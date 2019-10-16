@@ -1,12 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name">D&amp;D Grid</string>
+  <string name="app_name">RPG Grid</string>
   <string name="device_unknown_name">Unknown</string>
   <string
-    name="device_uuid"
+    name="service_id"
     tools:ignore="TypographyDashes"
   >
-    83d21756-2d5e-466c-9fcb-8c0f5149739b
+    d2007d50-6730-41c0-a871-06695ae08a55
   </string>
+  <string
+    name="string_characteristic_id"
+    tools:ignore="TypographyDashes"
+  >
+    2be82d7d-6dd9-40ee-8ee9-af581af0fc92
+  </string>
+  <string name="button_disconnect">Disconnect</string>
+  <string name="button_connect">Connect</string>
   <string name="button_debug_send">Send</string>
-  <string name="button_debug_read">Read</string>
+  <string name="bluetooth_unavailable">Bluetooth is not available on your device</string>
+  <string name="bluetooth_off">Bluetooth is OFF</string>
 </resources>

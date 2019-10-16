@@ -2,7 +2,4 @@
 <resources>
   <color name="color_icon">#808080</color>
   <color name="color_icon_selected">#000000</color>
-  <color name="color_primary_dark">#3F51B5</color>
-  <color name="color_primary">#2196F3</color>
-  <color name="color_accent">#D81B60</color>
 </resources>

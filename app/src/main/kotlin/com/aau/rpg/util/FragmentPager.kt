@@ -1,4 +1,4 @@
-package com.aau.dnd.util
+package com.aau.rpg.util
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
