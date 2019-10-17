@@ -73,5 +73,6 @@ dependencies {
 
     // Tests.
     testImplementation("org.assertj:assertj-core:3.13.2")
+    testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("junit:junit:4.12")
 }

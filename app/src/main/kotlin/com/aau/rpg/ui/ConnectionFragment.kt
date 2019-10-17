@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.aau.rpg.R
 import com.aau.rpg.core.bluetooth.BluetoothConnection
+import com.aau.rpg.core.bluetooth.ConnectionState
 import com.aau.rpg.core.bluetooth.NullBluetoothConnection
-import com.aau.rpg.util.toast
+import com.aau.rpg.core.grid.Grid
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -41,16 +42,16 @@ class ConnectionFragment : Fragment() {
         view.device_mac.text = bluetoothConnection.mac
 
         view.button_connect.text =
-            if (NullBluetoothConnection == bluetoothConnection) {
-                getString(R.string.button_connect)
-            } else {
+            if (ConnectionState.CONNECTED == bluetoothConnection.state) {
                 getString(R.string.button_disconnect)
+            } else {
+                getString(R.string.button_connect)
             }
 
         view.button_connect.setOnClickListener { connect() }
 
         view.button_send.setOnClickListener { send() }
-        view.button_send.isEnabled = NullBluetoothConnection != bluetoothConnection
+        view.button_send.isEnabled = ConnectionState.CONNECTED == bluetoothConnection.state
 
         return view
     }
@@ -63,7 +64,7 @@ class ConnectionFragment : Fragment() {
     /**
      * Handle Bluetooth connection drop.
      */
-    fun handleBluetoothDisconnect() {
+    fun onBluetoothDisconnect() {
         sendDisposables.clear()
 
         view?.apply {
@@ -81,7 +82,7 @@ class ConnectionFragment : Fragment() {
     /**
      * Handle Bluetooth connection establishment.
      */
-    fun handleBluetoothConnect(connection: BluetoothConnection) {
+    fun onBluetoothConnect(connection: BluetoothConnection) {
         view?.apply {
             button_connect.text = getString(R.string.button_disconnect)
             button_connect.isEnabled = true
@@ -108,22 +109,24 @@ class ConnectionFragment : Fragment() {
         }
     }
 
-    private fun handleSendResponse(response: String) {
-        toast(response)
-    }
-
-    private fun handleError(error: Throwable) {
+    private fun onError(error: Throwable) {
         Log.e(ConnectionFragment::class.java.simpleName, "Unhandled error", error)
     }
 
     private fun send() {
+        val testGrid = Grid(
+            data = listOf(
+                listOf(true, false, false),
+                listOf(false, true, false),
+                listOf(false, false, true)
+            )
+        )
+
         sendDisposables += (activity as MainActivity)
             .bluetoothConnection
-            .send("Hello World")
+            .send(testGrid)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                ::handleSendResponse,
-                ::handleError
-            )
+            .doOnError(::onError)
+            .subscribe()
     }
 }

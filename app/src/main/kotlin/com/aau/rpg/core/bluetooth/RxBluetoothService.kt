@@ -17,7 +17,8 @@ class RxBluetoothService(
     private val scanTimeoutMillis: Long,
     private val connectRetries: Int,
     private val writeReties: Int,
-    private val stringCharacteristicId: UUID,
+    private val pin:  String,
+    private val characteristicId: UUID,
     private val client: RxBleClient
 ) : BluetoothService {
 
@@ -62,11 +63,11 @@ class RxBluetoothService(
         .retry(connectRetries.toLong())
         .map { connection ->
             RxBluetoothConnection(
-                stringCharacteristicId = stringCharacteristicId,
+                characteristicId = characteristicId,
                 writeReties = writeReties,
                 connection = connection,
-                name = device.name ?: device.macAddress,
-                mac = device.macAddress
+                device = device,
+                pin = pin
             )
         }
 }

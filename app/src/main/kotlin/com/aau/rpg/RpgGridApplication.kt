@@ -22,8 +22,9 @@ class RpgGridApplication : Application() {
         scanTimeoutMillis = resources.getInteger(R.integer.scan_timeout_millis).toLong(),
         connectRetries = resources.getInteger(R.integer.connect_retries),
         writeReties = resources.getInteger(R.integer.write_retries),
-        stringCharacteristicId = UUID.fromString(getString(R.string.string_characteristic_id)),
+        characteristicId = UUID.fromString(getString(R.string.characteristic_id)),
         serviceId = UUID.fromString(getString(R.string.service_id)),
+        pin = getString(R.string.bluetooth_pin),
         client = RxBleClient.create(baseContext)
     )
 

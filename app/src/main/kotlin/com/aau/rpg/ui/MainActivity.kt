@@ -9,6 +9,7 @@ import com.aau.rpg.R
 import com.aau.rpg.core.bluetooth.BluetoothConnection
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.BluetoothState
+import com.aau.rpg.core.bluetooth.ConnectionState
 import com.aau.rpg.core.bluetooth.NullBluetoothConnection
 import com.aau.rpg.util.FragmentPager
 import com.google.android.material.tabs.TabLayout
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     fun disconnectBluetooth() {
         connectionDisposables.clear()
         bluetoothConnection = NullBluetoothConnection
-        connectFragment.handleBluetoothDisconnect()
+        connectFragment.onBluetoothDisconnect()
     }
 
     /**
@@ -76,25 +77,39 @@ class MainActivity : AppCompatActivity() {
             .connect()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                ::handleBluetoothConnection,
-                ::handleError
+                ::onBluetoothConnection,
+                ::onError
             )
     }
 
-    private fun handleBluetoothConnection(connection: BluetoothConnection) {
-        bluetoothConnection = connection
-        connectFragment.handleBluetoothConnect(connection)
-    }
-
-    private fun handleBluetoothStateChange(state: BluetoothState) {
-        if (BluetoothState.UNAVAILABLE == state) {
-            connectFragment.handleBluetoothDisconnect()
-        } else if (BluetoothState.OFF == state) {
-            connectFragment.handleBluetoothDisconnect()
+    private fun onConnectionStateChange(state: ConnectionState) {
+        if (ConnectionState.DISCONNECTED == state) {
+            disconnectBluetooth()
         }
     }
 
-    private fun handleError(error: Throwable) {
+    private fun onBluetoothConnection(connection: BluetoothConnection) {
+        bluetoothConnection = connection
+        connectFragment.onBluetoothConnect(connection)
+
+        connectionDisposables += bluetoothConnection
+            .observeState()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                ::onConnectionStateChange,
+                ::onError
+            )
+    }
+
+    private fun onBluetoothStateChange(state: BluetoothState) {
+        if (BluetoothState.UNAVAILABLE == state) {
+            disconnectBluetooth()
+        } else if (BluetoothState.OFF == state) {
+            disconnectBluetooth()
+        }
+    }
+
+    private fun onError(error: Throwable) {
         Log.e(MainActivity::class.java.simpleName, "Unhandled error", error)
     }
 
@@ -103,8 +118,8 @@ class MainActivity : AppCompatActivity() {
             .observeState()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                ::handleBluetoothStateChange,
-                ::handleError
+                ::onBluetoothStateChange,
+                ::onError
             )
     }
 

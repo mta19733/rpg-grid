@@ -1,6 +1,6 @@
 <resources>
   <integer name="connect_delay_millis">500</integer>
-  <integer name="scan_timeout_millis">30000</integer>
+  <integer name="scan_timeout_millis">500</integer>
   <integer name="connect_retries">5</integer>
   <integer name="write_retries">2</integer>
 </resources>
