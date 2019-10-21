@@ -16,7 +16,7 @@ android {
         targetSdkVersion(29)
         minSdkVersion(22)
 
-        applicationId = "com.aau.dnd"
+        applicationId = "com.aau.rpg"
         versionName = "1.0"
         versionCode = 1
     }
@@ -47,8 +47,9 @@ android {
         exclude("META-INF/proguard/coroutines.pro")
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
