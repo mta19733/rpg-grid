@@ -1,3 +1,3 @@
 package com.aau.rpg.core.grid
 
-data class Grid(val data: List<List<Boolean>>)
+data class Grid(val tiles: List<List<Boolean>>)

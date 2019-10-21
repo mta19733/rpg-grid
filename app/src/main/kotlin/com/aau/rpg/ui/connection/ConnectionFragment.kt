@@ -92,7 +92,7 @@ class ConnectionFragment : Fragment() {
 
     private fun sendListener() = View.OnClickListener {
         val testGrid = Grid(
-            data = listOf(
+            tiles = listOf(
                 listOf(true, false, false),
                 listOf(false, true, false),
                 listOf(false, false, true)

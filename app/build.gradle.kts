@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -76,8 +77,10 @@ dependencies {
     implementation("androidx.core:core-ktx:1.1.0")
 
     // Tests.
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation("org.assertj:assertj-core:3.13.2")
     testImplementation("io.mockk:mockk:1.9.3")
-    testImplementation("junit:junit:4.12")
+
+    val junitVersion = "5.5.2"
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }

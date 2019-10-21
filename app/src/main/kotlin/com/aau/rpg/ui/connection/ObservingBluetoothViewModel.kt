@@ -83,7 +83,7 @@ class ObservingBluetoothViewModel(
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                        ::onSendData,
+                        ::onSentData,
                         ::onError
                     )
             }
@@ -152,7 +152,7 @@ class ObservingBluetoothViewModel(
     }
 
     private fun createData(grid: Grid) = grid
-        .data
+        .tiles
         .flatten()
         .mapIndexedNotNull { idx, enabled ->
             if (enabled) {
@@ -163,7 +163,7 @@ class ObservingBluetoothViewModel(
         }
         .joinToString(",")
 
-    private fun onSendData(data: String) {
+    private fun onSentData(data: String) {
         sentData.value = data
     }
 
