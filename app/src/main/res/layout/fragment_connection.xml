@@ -59,7 +59,7 @@
       android:id="@+id/button_send"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/button_debug_send"
+      android:text="@string/button_send"
       android:layout_weight="1"
       android:layout_margin="4dp"
       android:enabled="false"

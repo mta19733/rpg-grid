@@ -1,21 +1,27 @@
 package com.aau.rpg.core.bluetooth
 
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface BluetoothConnection {
 
     /**
-     * Connected devices name.
+     * Connection name.
      */
     val name: String
 
     /**
-     * Connected devices mac address.
+     * Connection mac address.
      */
     val mac: String
 
     /**
-     * Send raw string data and receive a string.
+     * Observe connection state.
+     */
+    fun observeState(): Observable<ConnectionState>
+
+    /**
+     * Send raw string information.
      */
     fun send(data: String): Single<String>
 }
