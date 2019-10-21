@@ -1,23 +1,17 @@
 package com.aau.rpg.core.bluetooth
 
-import com.aau.rpg.core.grid.Grid
 import io.reactivex.Observable
 import io.reactivex.Single
 
 interface BluetoothConnection {
 
     /**
-     * Current connection state.
-     */
-    val state: ConnectionState
-
-    /**
-     * Connected devices name.
+     * Connection name.
      */
     val name: String
 
     /**
-     * Connected devices mac address.
+     * Connection mac address.
      */
     val mac: String
 
@@ -27,7 +21,7 @@ interface BluetoothConnection {
     fun observeState(): Observable<ConnectionState>
 
     /**
-     * Send grid information.
+     * Send raw string information.
      */
-    fun send(grid: Grid): Single<ByteArray>
+    fun send(data: String): Single<String>
 }

@@ -5,11 +5,6 @@ import io.reactivex.Observable
 interface BluetoothService {
 
     /**
-     * Current Bluetooth state.
-     */
-    val state: BluetoothState
-
-    /**
      * Track Bluetooth state.
      */
     fun observeState(): Observable<BluetoothState>

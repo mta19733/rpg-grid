@@ -3,12 +3,16 @@ package com.aau.rpg
 import android.app.Application
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.RxBluetoothService
+import com.aau.rpg.ui.connection.BluetoothViewModel
+import com.aau.rpg.ui.connection.ObservingBluetoothViewModel
 import com.polidea.rxandroidble2.RxBleClient
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import java.util.UUID
 
+@Suppress("unused")
 class RpgGridApplication : Application() {
 
     override fun onCreate() {
@@ -32,6 +36,12 @@ class RpgGridApplication : Application() {
         val mainModule = module {
             single<BluetoothService> {
                 createBluetoothService()
+            }
+
+            viewModel<BluetoothViewModel> {
+                ObservingBluetoothViewModel(
+                    bluetooth = get()
+                )
             }
         }
 

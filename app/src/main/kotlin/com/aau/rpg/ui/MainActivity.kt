@@ -5,41 +5,36 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.aau.rpg.R
-import com.aau.rpg.core.bluetooth.BluetoothConnection
-import com.aau.rpg.core.bluetooth.BluetoothService
-import com.aau.rpg.core.bluetooth.BluetoothState
-import com.aau.rpg.core.bluetooth.ConnectionState
-import com.aau.rpg.core.bluetooth.NullBluetoothConnection
+import com.aau.rpg.ui.connection.BluetoothViewModel
+import com.aau.rpg.ui.connection.ConnectionFragment
+import com.aau.rpg.ui.connection.Status
 import com.aau.rpg.util.FragmentPager
+import com.aau.rpg.util.toast
 import com.google.android.material.tabs.TabLayout
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.tab_layout
 import kotlinx.android.synthetic.main.activity_main.view_pager
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    var bluetoothConnection: BluetoothConnection = NullBluetoothConnection
-
-    private val bluetoothService by inject<BluetoothService>()
-    private val connectFragment = ConnectionFragment()
-
-    private val connectionDisposables = CompositeDisposable()
-    private var stateDisposable: Disposable? = null
+    private val connectionViewModel by viewModel<BluetoothViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        observeBluetoothState()
+        // Connection state must be observed in root, so that it does not get cleared when
+        // connection fragment cleans up.
+        connectionViewModel.observeState()
+        connectionViewModel.sentData.observe(this, sentDataObserver())
+        connectionViewModel.status.observe(this, statusObserver())
+        connectionViewModel.error.observe(this, errorObserver())
 
         val fragments = listOf(
-            getDrawable(R.drawable.ic_bluetooth) to connectFragment,
+            getDrawable(R.drawable.ic_bluetooth) to ConnectionFragment(),
             getDrawable(R.drawable.ic_videogame_asset) to PlayFragment(),
             getDrawable(R.drawable.ic_settings) to SettingsFragment()
         )
@@ -53,74 +48,29 @@ class MainActivity : AppCompatActivity() {
         selectFirstTab()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        connectionDisposables.clear()
-        stateDisposable?.dispose()
+    private fun sentDataObserver() = Observer<String> { data ->
+        toast("${getString(R.string.msg_prefix_sent)} $data")
     }
 
-    /**
-     * Disconnect and cleanup Bluetooth connection from device.
-     */
-    fun disconnectBluetooth() {
-        connectionDisposables.clear()
-        bluetoothConnection = NullBluetoothConnection
-        connectFragment.onBluetoothDisconnect()
-    }
-
-    /**
-     * Establish Bluetooth connection to device.
-     */
-    fun connectBluetooth() {
-        connectionDisposables += bluetoothService
-            .connect()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                ::onBluetoothConnection,
-                ::onError
-            )
-    }
-
-    private fun onConnectionStateChange(state: ConnectionState) {
-        if (ConnectionState.DISCONNECTED == state) {
-            disconnectBluetooth()
+    private fun statusObserver() = Observer<Status> { status: Status ->
+        val messageId = when (status) {
+            Status.LOST_CONNECTION -> R.string.msg_bluetooth_device_lost_connection
+            Status.NOT_CONNECTED -> R.string.msg_bluetooth_device_not_connected
+            Status.NOT_FOUND -> R.string.msg_bluetooth_device_not_found
         }
+
+        toast(getString(messageId))
     }
 
-    private fun onBluetoothConnection(connection: BluetoothConnection) {
-        bluetoothConnection = connection
-        connectFragment.onBluetoothConnect(connection)
+    private fun errorObserver() = Observer<Throwable> { error ->
+        val message = error?.message ?: ""
+        toast("${getString(R.string.msg_prefix_error)} $message")
 
-        connectionDisposables += bluetoothConnection
-            .observeState()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                ::onConnectionStateChange,
-                ::onError
-            )
-    }
-
-    private fun onBluetoothStateChange(state: BluetoothState) {
-        if (BluetoothState.UNAVAILABLE == state) {
-            disconnectBluetooth()
-        } else if (BluetoothState.OFF == state) {
-            disconnectBluetooth()
-        }
-    }
-
-    private fun onError(error: Throwable) {
-        Log.e(MainActivity::class.java.simpleName, "Unhandled error", error)
-    }
-
-    private fun observeBluetoothState() {
-        stateDisposable = bluetoothService
-            .observeState()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                ::onBluetoothStateChange,
-                ::onError
-            )
+        Log.e(
+            MainActivity::class.java.simpleName,
+            "Bluetooth error",
+            error
+        )
     }
 
     private fun setupPager(fragments: List<Pair<*, Fragment>>) {
@@ -147,8 +97,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun selectFirstTab() {
-        tab_layout
-            .getTabAt(0)
-            ?.also(TabLayout.Tab::select)
+        tab_layout.getTabAt(0)?.also(TabLayout.Tab::select)
     }
 }
