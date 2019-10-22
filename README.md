@@ -4,7 +4,7 @@ board. The hardware code can be found on [Arduino project].
 
 ## Prerequisites
 To build this project, the following tools are required:
-* [JDK] 8 or grater.
+* [JDK 8] or greater.
 * [Intellij IDEA] with [Android Support] (installed by default) plugin or 
 [Android Studio].
 * An Android device with enabled dev mode.
@@ -24,11 +24,11 @@ After this is done, navigate to `app/build/outputs/apk/release` and grab the
 APK files.
 
 ## Links
-* [StackOverflow BLE tips](https://stackoverflow.com/questions/17870189/android-4-3-bluetooth-low-energy-unstable).
-* [Reddit BLE tips](https://www.reddit.com/r/androiddev/comments/4ofnbp/bluetooth_ble_development_is_miserable_on_android).
-* [BLE example](https://github.com/Polidea/RxAndroidBle/blob/master/sample/src/main/java/com/polidea/rxandroidble2/sample/example2_connection/ConnectionExampleActivity.java).
+* [StackOverflow BLE tips](https://stackoverflow.com/questions/17870189/android-4-3-bluetooth-low-energy-unstable)
+* [Reddit BLE tips](https://www.reddit.com/r/androiddev/comments/4ofnbp/bluetooth_ble_development_is_miserable_on_android)
+* [BLE example](https://github.com/Polidea/RxAndroidBle/blob/master/sample/src/main/java/com/polidea/rxandroidble2/sample/example2_connection/ConnectionExampleActivity.java)
 
-[JDK]: https://openjdk.java.net/install
+[JDK 8]: https://openjdk.java.net/install
 [Intellij IDEA]: https://www.jetbrains.com/idea
 [Android Support]: https://plugins.jetbrains.com/plugin/1792-android-support
 [Android Studio]: https://developer.android.com/studio
