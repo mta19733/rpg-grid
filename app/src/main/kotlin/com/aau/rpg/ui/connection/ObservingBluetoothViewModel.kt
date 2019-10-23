@@ -5,7 +5,7 @@ import com.aau.rpg.core.bluetooth.BluetoothConnection
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.BluetoothState
 import com.aau.rpg.core.bluetooth.ConnectionState
-import com.aau.rpg.core.grid.Grid
+import com.aau.rpg.ui.grid.Grid
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign

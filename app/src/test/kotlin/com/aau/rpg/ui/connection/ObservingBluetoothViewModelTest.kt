@@ -3,7 +3,7 @@ package com.aau.rpg.ui.connection
 import com.aau.rpg.core.bluetooth.BluetoothConnection
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.ConnectionState
-import com.aau.rpg.core.grid.Grid
+import com.aau.rpg.ui.grid.Grid
 import com.aau.rpg.test.InstantExecutorExtension
 import io.mockk.every
 import io.mockk.mockk

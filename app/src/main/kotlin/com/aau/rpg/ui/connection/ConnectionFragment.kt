@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
-import com.aau.rpg.core.grid.Grid
+import com.aau.rpg.ui.grid.Grid
 import com.aau.rpg.util.toast
 import kotlinx.android.synthetic.main.fragment_connection.button_connect
 import kotlinx.android.synthetic.main.fragment_connection.button_send
@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ConnectionFragment : Fragment() {
 
-    private val connectionViewModel by sharedViewModel<BluetoothViewModel>()
+    private val bluetooth by sharedViewModel<BluetoothViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +35,10 @@ class ConnectionFragment : Fragment() {
             false
         )
 
-        connectionViewModel.connectionData.observe(this, connectionDataObserver())
-        connectionViewModel.connecting.observe(this, connectingObserver())
-        connectionViewModel.connected.observe(this, connectedObserver())
-        connectionViewModel.enabled.observe(this, enabledObserver())
+        bluetooth.connectionData.observe(this, connectionDataObserver())
+        bluetooth.connecting.observe(this, connectingObserver())
+        bluetooth.connected.observe(this, connectedObserver())
+        bluetooth.enabled.observe(this, enabledObserver())
 
         view.button_send.setOnClickListener(sendListener())
 
@@ -48,7 +48,7 @@ class ConnectionFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (REQUEST_ENABLE_BLUETOOTH == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
-                connectionViewModel.connect()
+                bluetooth.connect()
             } else {
                 toast(getString(R.string.msg_bluetooth_not_enabled))
             }
@@ -99,15 +99,15 @@ class ConnectionFragment : Fragment() {
             )
         )
 
-        connectionViewModel.send(testGrid)
+        bluetooth.send(testGrid)
     }
 
     private fun disconnectListener() = View.OnClickListener {
-        connectionViewModel.disconnect()
+        bluetooth.disconnect()
     }
 
     private fun connectListener() = View.OnClickListener {
-        connectionViewModel.connect()
+        bluetooth.connect()
     }
 
     private fun requestListener() = View.OnClickListener {

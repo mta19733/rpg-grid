@@ -22,10 +22,10 @@ class RpgGridApplication : Application() {
     }
 
     private fun createBluetoothService() = RxBluetoothService(
-        connectDelayMillis = resources.getInteger(R.integer.connect_delay_millis).toLong(),
-        scanTimeoutMillis = resources.getInteger(R.integer.scan_timeout_millis).toLong(),
-        connectRetries = resources.getInteger(R.integer.connect_retries),
-        writeReties = resources.getInteger(R.integer.write_retries),
+        connectDelayMillis = resources.getInteger(R.integer.ble_connect_delay_millis).toLong(),
+        scanTimeoutMillis = resources.getInteger(R.integer.ble_scan_timeout_millis).toLong(),
+        connectRetries = resources.getInteger(R.integer.ble_connect_retries),
+        writeReties = resources.getInteger(R.integer.ble_write_retries),
         characteristicId = UUID.fromString(getString(R.string.characteristic_id)),
         serviceId = UUID.fromString(getString(R.string.service_id)),
         pin = getString(R.string.bluetooth_pin),

@@ -2,7 +2,7 @@ package com.aau.rpg.ui.connection
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.aau.rpg.core.grid.Grid
+import com.aau.rpg.ui.grid.Grid
 
 abstract class BluetoothViewModel : ViewModel() {
 

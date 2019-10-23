@@ -1,6 +1,11 @@
 <resources>
-  <integer name="connect_delay_millis">500</integer>
-  <integer name="scan_timeout_millis">10000</integer>
-  <integer name="connect_retries">5</integer>
-  <integer name="write_retries">5</integer>
+  <integer name="ble_connect_delay_millis">500</integer>
+  <integer name="ble_connect_retries">5</integer>
+  <integer name="ble_scan_timeout_millis">10000</integer>
+  <integer name="ble_write_retries">5</integer>
+
+  <integer name="button_grid_margin">5</integer>
+  <integer name="button_grid_size">100</integer>
+
+  <integer name="grid_size">8</integer>
 </resources>

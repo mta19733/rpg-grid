@@ -10,6 +10,7 @@ import com.aau.rpg.R
 import com.aau.rpg.ui.connection.BluetoothViewModel
 import com.aau.rpg.ui.connection.ConnectionFragment
 import com.aau.rpg.ui.connection.Status
+import com.aau.rpg.ui.grid.GridFragment
 import com.aau.rpg.util.FragmentPager
 import com.aau.rpg.util.toast
 import com.google.android.material.tabs.TabLayout
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragments = listOf(
             getDrawable(R.drawable.ic_bluetooth) to ConnectionFragment(),
-            getDrawable(R.drawable.ic_videogame_asset) to PlayFragment(),
+            getDrawable(R.drawable.ic_videogame_asset) to GridFragment(),
             getDrawable(R.drawable.ic_settings) to SettingsFragment()
         )
 
