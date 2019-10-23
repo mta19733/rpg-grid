@@ -10,8 +10,9 @@ import com.aau.rpg.R
 import com.aau.rpg.ui.connection.BluetoothViewModel
 import com.aau.rpg.ui.connection.ConnectionFragment
 import com.aau.rpg.ui.connection.Status
-import com.aau.rpg.util.FragmentPager
-import com.aau.rpg.util.toast
+import com.aau.rpg.ui.grid.GridFragment
+import com.aau.rpg.ui.util.FragmentPager
+import com.aau.rpg.ui.util.toast
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.tab_layout
 import kotlinx.android.synthetic.main.activity_main.view_pager
@@ -19,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val connectionViewModel by viewModel<BluetoothViewModel>()
+    private val bluetooth by viewModel<BluetoothViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,23 +29,20 @@ class MainActivity : AppCompatActivity() {
 
         // Connection state must be observed in root, so that it does not get cleared when
         // connection fragment cleans up.
-        connectionViewModel.observeState()
-        connectionViewModel.sentData.observe(this, sentDataObserver())
-        connectionViewModel.status.observe(this, statusObserver())
-        connectionViewModel.error.observe(this, errorObserver())
+        bluetooth.observeState()
+        bluetooth.sentData.observe(this, sentDataObserver())
+        bluetooth.status.observe(this, statusObserver())
+        bluetooth.error.observe(this, errorObserver())
 
         val fragments = listOf(
             getDrawable(R.drawable.ic_bluetooth) to ConnectionFragment(),
-            getDrawable(R.drawable.ic_videogame_asset) to PlayFragment(),
+            getDrawable(R.drawable.ic_videogame_asset) to GridFragment(),
             getDrawable(R.drawable.ic_settings) to SettingsFragment()
         )
 
         setupPager(fragments)
         setupTabs(fragments)
-    }
 
-    override fun onResume() {
-        super.onResume()
         selectFirstTab()
     }
 

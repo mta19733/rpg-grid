@@ -3,7 +3,6 @@ package com.aau.rpg.ui.connection
 import com.aau.rpg.core.bluetooth.BluetoothConnection
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.ConnectionState
-import com.aau.rpg.core.grid.Grid
 import com.aau.rpg.test.InstantExecutorExtension
 import io.mockk.every
 import io.mockk.mockk
@@ -15,10 +14,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-class ObservingBluetoothViewModelTest {
+class DefaultBluetoothViewModelTest {
 
     private val bluetooth = mockk<BluetoothService>()
-    private val model = ObservingBluetoothViewModel(bluetooth)
+    private val model = DefaultBluetoothViewModel(bluetooth)
 
     @Test
     fun `should send grid in correct format`() {
@@ -46,17 +45,10 @@ class ObservingBluetoothViewModelTest {
             Observable.just(conn)
         }
 
+        val rawData = "0,4,8"
         model.connect()
-        model.send(
-            Grid(
-                listOf(
-                    listOf(true, false, false),
-                    listOf(false, true, false),
-                    listOf(false, false, true)
-                )
-            )
-        )
+        model.send(rawData)
 
-        assertThat(data.captured).isEqualTo("0,4,8")
+        assertThat(data.captured).isEqualTo(rawData)
     }
 }

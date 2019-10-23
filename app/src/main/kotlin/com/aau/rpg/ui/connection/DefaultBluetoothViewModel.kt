@@ -5,13 +5,12 @@ import com.aau.rpg.core.bluetooth.BluetoothConnection
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.BluetoothState
 import com.aau.rpg.core.bluetooth.ConnectionState
-import com.aau.rpg.core.grid.Grid
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 
-class ObservingBluetoothViewModel(
+class DefaultBluetoothViewModel(
     private val bluetooth: BluetoothService
 ) : BluetoothViewModel() {
 
@@ -75,11 +74,11 @@ class ObservingBluetoothViewModel(
             )
     }
 
-    override fun send(grid: Grid) {
+    override fun send(data: String) {
         connection
             ?.also { connection ->
                 connectionDisposables += connection
-                    .send(createData(grid))
+                    .send(data)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -150,18 +149,6 @@ class ObservingBluetoothViewModel(
 
         this.connection = connection
     }
-
-    private fun createData(grid: Grid) = grid
-        .tiles
-        .flatten()
-        .mapIndexedNotNull { idx, enabled ->
-            if (enabled) {
-                idx.toString()
-            } else {
-                null
-            }
-        }
-        .joinToString(",")
 
     private fun onSentData(data: String) {
         sentData.value = data

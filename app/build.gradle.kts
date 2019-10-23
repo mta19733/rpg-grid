@@ -63,6 +63,8 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 
+    implementation("com.otaliastudios:zoomlayout:1.7.0")
+
     val koinVersion = "2.0.1"
     implementation("org.koin:koin-androidx-viewmodel:$koinVersion")
     implementation("org.koin:koin-androidx-ext:$koinVersion")

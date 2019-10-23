@@ -57,7 +57,7 @@ abstract class BluetoothViewModel : ViewModel() {
     abstract fun connect()
 
     /**
-     * Send [Grid] data via Bluetooth.
+     * Send string data via Bluetooth.
      */
-    abstract fun send(grid: Grid)
+    abstract fun send(data: String)
 }
