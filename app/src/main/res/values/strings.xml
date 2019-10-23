@@ -20,10 +20,18 @@
 
   <string name="bluetooth_pin">6969</string>
 
-  <string name="msg_bluetooth_device_lost_connection">Lost connection</string>
-  <string name="msg_bluetooth_device_not_connected">Device not connected</string>
-  <string name="msg_bluetooth_device_not_found">Device not found</string>
-  <string name="msg_bluetooth_not_enabled">Bluetooth not enabled</string>
+  <string name="msg_bluetooth_device_lost_connection">
+    Lost connection to device
+  </string>
+  <string name="msg_bluetooth_device_not_connected">
+    Device is not connected
+  </string>
+  <string name="msg_bluetooth_device_not_found">
+    Device not found, try enabling location services
+  </string>
+  <string name="msg_bluetooth_not_enabled">
+    Bluetooth service must be enabled
+  </string>
 
   <string name="msg_prefix_error">Error:</string>
   <string name="msg_prefix_sent">Sent:</string>
