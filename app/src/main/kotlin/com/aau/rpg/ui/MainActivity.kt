@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val connectionViewModel by viewModel<BluetoothViewModel>()
+    private val bluetooth by viewModel<BluetoothViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
 
         // Connection state must be observed in root, so that it does not get cleared when
         // connection fragment cleans up.
-        connectionViewModel.observeState()
-        connectionViewModel.sentData.observe(this, sentDataObserver())
-        connectionViewModel.status.observe(this, statusObserver())
-        connectionViewModel.error.observe(this, errorObserver())
+        bluetooth.observeState()
+        bluetooth.sentData.observe(this, sentDataObserver())
+        bluetooth.status.observe(this, statusObserver())
+        bluetooth.error.observe(this, errorObserver())
 
         val fragments = listOf(
             getDrawable(R.drawable.ic_bluetooth) to ConnectionFragment(),
@@ -42,10 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         setupPager(fragments)
         setupTabs(fragments)
-    }
 
-    override fun onResume() {
-        super.onResume()
         selectFirstTab()
     }
 

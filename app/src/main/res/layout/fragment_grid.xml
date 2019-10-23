@@ -5,8 +5,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:hasClickableChildren="true"
-  app:minZoom="0.5"
-  app:maxZoom="1"
+  app:minZoom="1"
+  app:maxZoom="2"
 >
   <GridLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
