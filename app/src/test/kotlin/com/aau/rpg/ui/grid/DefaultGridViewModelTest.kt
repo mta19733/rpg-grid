@@ -90,7 +90,6 @@ class DefaultGridViewModelTest {
         view.move(Direction.DOWN)
 
         val tile = Tile(3, false)
-        assertThat(view.tile.value).isEqualTo(tile)
         assertThat(view.grid.value).isEqualTo(
             tile.asGrid()
         )

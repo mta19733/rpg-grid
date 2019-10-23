@@ -18,32 +18,22 @@ import kotlinx.android.synthetic.main.fragment_connection.button_send
 import kotlinx.android.synthetic.main.fragment_connection.device_mac
 import kotlinx.android.synthetic.main.fragment_connection.device_name
 import kotlinx.android.synthetic.main.fragment_connection.progress_connecting
-import kotlinx.android.synthetic.main.fragment_connection.view.button_send
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ConnectionFragment : Fragment() {
 
     private val bluetoothViewModel by sharedViewModel<BluetoothViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view = inflater.inflate(
-            R.layout.fragment_connection,
-            container,
-            false
-        )
+    override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View =
+        inflater.inflate(R.layout.fragment_connection, group, false)
 
+    override fun onViewCreated(view: View, saved: Bundle?) {
         bluetoothViewModel.connectionData.observe(this, connectionDataObserver())
         bluetoothViewModel.connecting.observe(this, connectingObserver())
         bluetoothViewModel.connected.observe(this, connectedObserver())
         bluetoothViewModel.enabled.observe(this, enabledObserver())
 
-        view.button_send.setOnClickListener(sendListener())
-
-        return view
+        button_send.setOnClickListener(sendListener())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
