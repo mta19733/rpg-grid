@@ -2,7 +2,7 @@ package com.aau.rpg.ui.connection
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.aau.rpg.ui.grid.Grid
+import com.aau.rpg.core.grid.Grid
 
 abstract class BluetoothViewModel : ViewModel() {
 
@@ -57,7 +57,7 @@ abstract class BluetoothViewModel : ViewModel() {
     abstract fun connect()
 
     /**
-     * Send [Grid] data via Bluetooth.
+     * Send string data via Bluetooth.
      */
-    abstract fun send(grid: Grid)
+    abstract fun send(data: String)
 }

@@ -11,8 +11,8 @@ import com.aau.rpg.ui.connection.BluetoothViewModel
 import com.aau.rpg.ui.connection.ConnectionFragment
 import com.aau.rpg.ui.connection.Status
 import com.aau.rpg.ui.grid.GridFragment
-import com.aau.rpg.util.FragmentPager
-import com.aau.rpg.util.toast
+import com.aau.rpg.ui.util.FragmentPager
+import com.aau.rpg.ui.util.toast
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.tab_layout
 import kotlinx.android.synthetic.main.activity_main.view_pager

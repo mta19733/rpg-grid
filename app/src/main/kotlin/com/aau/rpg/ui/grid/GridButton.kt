@@ -14,12 +14,12 @@ class GridButton(context: Context) : ToggleButton(context) {
     constructor(
         context: Context,
         checked: Boolean,
-        idx: Int,
-        onClick: (idx: Int, checked: Boolean) -> Unit
+        id: Int,
+        onClick: (id: Int, checked: Boolean) -> Unit
     ) : this(context) {
-
         this.background = getDrawable(context, R.drawable.selector_button_grid)
         this.isChecked = checked
+        this.id = id
 
         val margin = context.resources.getInteger(R.integer.button_grid_margin)
         val size = context.resources.getInteger(R.integer.button_grid_size)
@@ -39,7 +39,7 @@ class GridButton(context: Context) : ToggleButton(context) {
         val changeAnimation = loadAnimation(context, R.anim.bounce)
         setOnCheckedChangeListener { button, newChecked ->
             button.startAnimation(changeAnimation)
-            onClick(idx, newChecked)
+            onClick(id, newChecked)
         }
     }
 

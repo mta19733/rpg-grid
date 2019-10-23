@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
-import com.aau.rpg.ui.grid.Grid
-import com.aau.rpg.util.toast
+import com.aau.rpg.core.grid.grid
+import com.aau.rpg.core.grid.normalizedIds
+import com.aau.rpg.ui.util.toast
 import kotlinx.android.synthetic.main.fragment_connection.button_connect
 import kotlinx.android.synthetic.main.fragment_connection.button_send
 import kotlinx.android.synthetic.main.fragment_connection.device_mac
@@ -22,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ConnectionFragment : Fragment() {
 
-    private val bluetooth by sharedViewModel<BluetoothViewModel>()
+    private val bluetoothViewModel by sharedViewModel<BluetoothViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +36,10 @@ class ConnectionFragment : Fragment() {
             false
         )
 
-        bluetooth.connectionData.observe(this, connectionDataObserver())
-        bluetooth.connecting.observe(this, connectingObserver())
-        bluetooth.connected.observe(this, connectedObserver())
-        bluetooth.enabled.observe(this, enabledObserver())
+        bluetoothViewModel.connectionData.observe(this, connectionDataObserver())
+        bluetoothViewModel.connecting.observe(this, connectingObserver())
+        bluetoothViewModel.connected.observe(this, connectedObserver())
+        bluetoothViewModel.enabled.observe(this, enabledObserver())
 
         view.button_send.setOnClickListener(sendListener())
 
@@ -48,7 +49,7 @@ class ConnectionFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (REQUEST_ENABLE_BLUETOOTH == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
-                bluetooth.connect()
+                bluetoothViewModel.connect()
             } else {
                 toast(getString(R.string.msg_bluetooth_not_enabled))
             }
@@ -91,23 +92,15 @@ class ConnectionFragment : Fragment() {
     }
 
     private fun sendListener() = View.OnClickListener {
-        val testGrid = Grid(
-            tiles = listOf(
-                listOf(true, false, false),
-                listOf(false, true, false),
-                listOf(false, false, true)
-            )
-        )
-
-        bluetooth.send(testGrid)
+        bluetoothViewModel.send(grid(3).normalizedIds())
     }
 
     private fun disconnectListener() = View.OnClickListener {
-        bluetooth.disconnect()
+        bluetoothViewModel.disconnect()
     }
 
     private fun connectListener() = View.OnClickListener {
-        bluetooth.connect()
+        bluetoothViewModel.connect()
     }
 
     private fun requestListener() = View.OnClickListener {
