@@ -46,6 +46,7 @@ class RxBluetoothService(
 
     private fun scanSettings() = ScanSettings
         .Builder()
+        .setShouldCheckLocationServicesState(false)
         .build()
 
     private fun filter(result: ScanResult): Boolean =
