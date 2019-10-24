@@ -3,9 +3,9 @@ package com.aau.rpg.core.grid
 import com.aau.rpg.ui.grid.Tile
 
 /**
- * Returns 2D grid of [size] from given [position].
+ * Returns a "view" 2D grid of [size] from given [position].
  */
-fun Grid.subGrid(position: Position, size: Int): Grid {
+fun Grid.view(position: Position, size: Int): Grid {
     val (row, col) = position
 
     val tiles = tiles
@@ -18,22 +18,6 @@ fun Grid.subGrid(position: Position, size: Int): Grid {
         tiles = tiles,
         size = size
     )
-}
-
-/**
- * Returns normalized id string.
- */
-fun Grid.normalizedIds(): String {
-    val ids = tiles
-        .flatten()
-        .filter(Tile::value)
-        .map(Tile::id)
-
-    val min = ids.min() ?: 0
-
-    return ids
-        .map { id -> id - min }
-        .joinToString(",")
 }
 
 /**

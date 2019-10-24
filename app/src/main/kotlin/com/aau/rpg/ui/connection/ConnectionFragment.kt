@@ -10,11 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
-import com.aau.rpg.core.grid.gridOf
-import com.aau.rpg.core.grid.normalizedIds
 import com.aau.rpg.ui.util.toast
 import kotlinx.android.synthetic.main.fragment_connection.button_connect
-import kotlinx.android.synthetic.main.fragment_connection.button_send
 import kotlinx.android.synthetic.main.fragment_connection.device_mac
 import kotlinx.android.synthetic.main.fragment_connection.device_name
 import kotlinx.android.synthetic.main.fragment_connection.progress_connecting
@@ -32,8 +29,6 @@ class ConnectionFragment : Fragment() {
         bluetoothViewModel.connecting.observe(this, connectingObserver())
         bluetoothViewModel.connected.observe(this, connectedObserver())
         bluetoothViewModel.enabled.observe(this, enabledObserver())
-
-        button_send.setOnClickListener(sendListener())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -55,13 +50,9 @@ class ConnectionFragment : Fragment() {
         if (connected) {
             button_connect.text = getString(R.string.button_disconnect)
             button_connect.setOnClickListener(disconnectListener())
-
-            button_send.isEnabled = true
         } else {
             button_connect.text = getString(R.string.button_connect)
             button_connect.setOnClickListener(connectListener())
-
-            button_send.isEnabled = false
         }
     }
 
@@ -79,10 +70,6 @@ class ConnectionFragment : Fragment() {
         } else {
             View.GONE
         }
-    }
-
-    private fun sendListener() = View.OnClickListener {
-        bluetoothViewModel.send(gridOf(3).normalizedIds())
     }
 
     private fun disconnectListener() = View.OnClickListener {

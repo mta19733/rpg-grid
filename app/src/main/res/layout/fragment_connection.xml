@@ -44,27 +44,11 @@
     />
   </LinearLayout>
 
-  <LinearLayout
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/button_connect"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-  >
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_connect"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/button_connect"
-      android:layout_margin="@dimen/button_margin"
-      android:layout_weight="1"
-    />
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/button_send"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/button_send"
-      android:layout_weight="1"
-      android:layout_margin="@dimen/button_margin"
-      android:enabled="false"
-    />
-  </LinearLayout>
+    android:text="@string/button_connect"
+    android:layout_margin="@dimen/button_margin"
+  />
 </LinearLayout>

@@ -3,19 +3,23 @@ package com.aau.rpg.ui.grid
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.aau.rpg.core.grid.Grid
-import com.aau.rpg.core.grid.Position
 
 abstract class GridViewModel : ViewModel() {
-
-    /**
-     * Information about position changes.
-     */
-    abstract val position: LiveData<Position>
 
     /**
      * Information about grid changes.
      */
     abstract val grid: LiveData<Grid>
+
+    /**
+     * View info string changes.
+     */
+    abstract val info: LiveData<String>
+
+    /**
+     * Create new view info.
+     */
+    abstract fun createViewInfo()
 
     /**
      * Move current grid to given [direction].

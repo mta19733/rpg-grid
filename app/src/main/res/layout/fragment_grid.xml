@@ -6,6 +6,7 @@
   android:layout_width="match_parent"
   android:orientation="vertical"
 >
+
   <com.otaliastudios.zoom.ZoomLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -26,40 +27,50 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
   >
-    <LinearLayout
+    <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
     >
       <com.google.android.material.button.MaterialButton
+        style="@style/GridControlButton"
         android:id="@+id/button_up"
-        style="@style/NavigationButton"
+        android:layout_centerInParent="true"
         app:iconGravity="textEnd"
         app:icon="@drawable/ic_arrow_up"
       />
-    </LinearLayout>
+
+      <com.google.android.material.button.MaterialButton
+        style="@style/GridControlButton"
+        android:id="@+id/button_sync"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        app:iconGravity="textEnd"
+        app:icon="@drawable/ic_sync"
+      />
+    </RelativeLayout>
+
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
     >
       <com.google.android.material.button.MaterialButton
+        style="@style/GridControlButton"
         android:id="@+id/button_left"
-        style="@style/NavigationButton"
         app:iconGravity="textEnd"
         app:icon="@drawable/ic_arrow_left"
       />
 
       <com.google.android.material.button.MaterialButton
+        style="@style/GridControlButton"
         android:id="@+id/button_down"
-        style="@style/NavigationButton"
         app:iconGravity="textEnd"
         app:icon="@drawable/ic_arrow_down"
       />
 
       <com.google.android.material.button.MaterialButton
+        style="@style/GridControlButton"
         android:id="@+id/button_right"
-        style="@style/NavigationButton"
         app:iconGravity="textEnd"
         app:icon="@drawable/ic_arrow_right"
       />

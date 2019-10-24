@@ -42,7 +42,7 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.subGrid(
+        val subGrid = fullGrid.view(
             Position(
                 row = 0,
                 col = 0
@@ -82,7 +82,7 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.subGrid(
+        val subGrid = fullGrid.view(
             position = Position(
                 row = 1,
                 col = 1
@@ -103,24 +103,5 @@ class FunctionsTest {
                 size = 2
             )
         )
-    }
-
-    @Test
-    fun `should create normalized ids string`() {
-        val grid = Grid(
-            tiles = listOf(
-                listOf(
-                    Tile(0, true), Tile(1, false)
-                ),
-                listOf(
-                    Tile(2, false), Tile(3, true)
-                )
-            ),
-            size = 2
-        )
-
-        val ids = grid.normalizedIds()
-
-        assertThat(ids).isEqualTo("0,3")
     }
 }
