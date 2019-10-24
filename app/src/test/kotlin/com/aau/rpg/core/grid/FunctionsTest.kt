@@ -11,7 +11,7 @@ class FunctionsTest {
         val grid = gridOf(2)
 
         assertThat(grid).isEqualTo(
-            Grid(
+            gridOf(
                 tiles = listOf(
                     listOf(
                         Tile(0, false), Tile(1, false)
@@ -27,7 +27,7 @@ class FunctionsTest {
 
     @Test
     fun `should create sub grid from start`() {
-        val fullGrid = Grid(
+        val fullGrid = gridOf(
             tiles = listOf(
                 listOf(
                     Tile(0, true), Tile(1, true), Tile(2, false)
@@ -51,7 +51,7 @@ class FunctionsTest {
         )
 
         assertThat(subGrid).isEqualTo(
-            Grid(
+            gridOf(
                 tiles = listOf(
                     listOf(
                         Tile(0, true), Tile(1, true)
@@ -67,7 +67,7 @@ class FunctionsTest {
 
     @Test
     fun `should create sub grid from middle`() {
-        val fullGrid = Grid(
+        val fullGrid = gridOf(
             tiles = listOf(
                 listOf(
                     Tile(0, false), Tile(1, false), Tile(2, false)
@@ -91,7 +91,7 @@ class FunctionsTest {
         )
 
         assertThat(subGrid).isEqualTo(
-            Grid(
+            gridOf(
                 tiles = listOf(
                     listOf(
                         Tile(4, true), Tile(5, true)

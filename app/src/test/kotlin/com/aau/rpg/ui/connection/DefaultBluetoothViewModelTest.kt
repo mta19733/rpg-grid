@@ -23,27 +23,14 @@ class DefaultBluetoothViewModelTest {
     fun `should send grid in correct format`() {
         val data = slot<String>()
         val conn = mockk<BluetoothConnection> {
-            every {
-                observeState()
-            } answers {
-                Observable.just(ConnectionState.CONNECTED)
-            }
-
-            every {
-                send(capture(data))
-            } answers {
-                Single.just(firstArg())
-            }
+            every { send(capture(data)) } answers { Single.just(firstArg()) }
+            every { observeState() } returns Observable.just(ConnectionState.CONNECTED)
 
             every { name } returns ""
             every { mac } returns ""
         }
 
-        every {
-            bluetooth.connect()
-        } answers {
-            Observable.just(conn)
-        }
+        every { bluetooth.connect() } returns Observable.just(conn)
 
         val rawData = "0,4,8"
         model.connect()

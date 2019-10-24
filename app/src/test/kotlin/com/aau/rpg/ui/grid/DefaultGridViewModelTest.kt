@@ -1,10 +1,11 @@
 package com.aau.rpg.ui.grid
 
-import com.aau.rpg.core.grid.Grid
 import com.aau.rpg.core.grid.GridStorageService
+import com.aau.rpg.core.grid.gridOf
 import com.aau.rpg.test.InstantExecutorExtension
 import io.mockk.every
 import io.mockk.mockk
+import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,7 +15,7 @@ class DefaultGridViewModelTest {
 
     private val gridStorageService = mockk<GridStorageService> {
         every { load() } answers {
-            Grid(
+            val grid = gridOf(
                 tiles = listOf(
                     listOf(
                         Tile(0, true), Tile(1, false)
@@ -25,6 +26,8 @@ class DefaultGridViewModelTest {
                 ),
                 size = SIZE
             )
+
+            Single.just(grid)
         }
     }
 
@@ -117,7 +120,7 @@ class DefaultGridViewModelTest {
         assertThat(view.info.value).isEqualTo("0")
     }
 
-    private fun Tile.asGrid() = Grid(
+    private fun Tile.asGrid() = gridOf(
         tiles = listOf(listOf(this)),
         size = 1
     )

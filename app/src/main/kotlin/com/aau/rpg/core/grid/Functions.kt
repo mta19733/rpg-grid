@@ -14,7 +14,7 @@ fun Grid.view(position: Position, size: Int): Grid {
             tileRow.subList(col, col + size)
         }
 
-    return Grid(
+    return copy(
         tiles = tiles,
         size = size
     )
@@ -26,20 +26,23 @@ fun Grid.view(position: Position, size: Int): Grid {
 fun positionOf(row: Int = 0, col: Int = 0) = Position(row, col)
 
 /**
- * Returns 2D [Grid] of given size.
+ * Returns 2D with given parameters.
  */
-fun gridOf(size: Int): Grid {
-    val tiles = MutableList(size) { rowIdx ->
-        MutableList(size) { colIdx ->
-            Tile(
-                value = false,
-                id = rowIdx * size + colIdx
-            )
-        }
-    }
+fun gridOf(
+    size: Int = 0,
+    name: String = "",
+    tiles: List<List<Tile>> = createTiles(size)
+): Grid = Grid(
+    tiles = tiles,
+    size = size,
+    name = name
+)
 
-    return Grid(
-        tiles = tiles,
-        size = size
-    )
+private fun createTiles(size: Int) = List(size) { rowIdx ->
+    List(size) { colIdx ->
+        Tile(
+            value = false,
+            id = rowIdx * size + colIdx
+        )
+    }
 }

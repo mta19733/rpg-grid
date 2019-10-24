@@ -1,26 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">RPG Grid</string>
-  <string name="device_unknown_name">Unknown</string>
-  <string
-    name="service_id"
-    tools:ignore="TypographyDashes"
-  >
+
+  <!-- Bluetooth service -->
+  <string name="ble_service_id" tools:ignore="TypographyDashes">
     d2007d50-6730-41c0-a871-06695ae08a55
   </string>
-  <string
-    name="characteristic_id"
-    tools:ignore="TypographyDashes"
-  >
+  <string name="ble_characteristic_id" tools:ignore="TypographyDashes">
     2be82d7d-6dd9-40ee-8ee9-af581af0fc92
   </string>
+  <string name="ble_pin">6969</string>
 
+  <!-- Storage service -->
+  <string name="storage_name">rpg_grid.json</string>
+
+  <!-- Buttons -->
   <string name="button_disconnect">Disconnect</string>
   <string name="button_connect">Connect</string>
 
-  <string name="bluetooth_pin">6969</string>
-
-  <string name="txt_grid_info">row = %1$d col = %2$d</string>
-
+  <!-- Messages -->
   <string name="msg_bluetooth_device_lost_connection">
     Lost connection to device
   </string>
@@ -33,7 +30,6 @@
   <string name="msg_bluetooth_not_enabled">
     Bluetooth service must be enabled
   </string>
-
   <string name="msg_sent_data">Data sent to device</string>
   <string name="msg_error">Error: %1$s</string>
 </resources>

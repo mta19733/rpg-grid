@@ -15,7 +15,7 @@ class DefaultGridViewModel(
 ) : GridViewModel() {
 
     private var position: Position = positionOf()
-    private var fullGrid: Grid = gridStorageService.load()
+    private var fullGrid: Grid = gridStorageService.load().blockingGet()
 
     override val grid = MutableLiveData<Grid>(createViewGrid())
 
@@ -100,9 +100,8 @@ class DefaultGridViewModel(
             }
         }
 
-        fullGrid = Grid(
-            tiles = newTiles,
-            size = fullGrid.size
+        fullGrid = fullGrid.copy(
+            tiles = newTiles
         )
     }
 }

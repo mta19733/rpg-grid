@@ -5,31 +5,31 @@ board. The hardware code can be found on [Arduino project].
 ## Prerequisites
 To build this project, the following tools are required:
 * [JDK 8] or greater.
-* [Intellij IDEA] with [Android Support] (installed by default) plugin or 
-[Android Studio].
+* [Intellij IDEA] with [Android Support] plugin.
+* Android SDK (this is setup via [Android Support] plugin).
 * An Android device with enabled dev mode.
 
 ## Running
-1. Open up your IDE.
-2. Connect your Android device via USB.
-3. Start the `debug-app` run configuration.
+1. Connect your Android device via USB.
+2. Start the `debug-app` run configuration.
+3. Select your device.
 
 ## Building
 Navigate to root project directory and run the following:
 ```bash
-./gradlew build
+./gradlew assemble
 ```
 
 After this is done, navigate to `app/build/outputs/apk/release` and grab the 
 APK files.
 
-## Links
-* [StackOverflow BLE tips](https://stackoverflow.com/questions/17870189/android-4-3-bluetooth-low-energy-unstable)
-* [Reddit BLE tips](https://www.reddit.com/r/androiddev/comments/4ofnbp/bluetooth_ble_development_is_miserable_on_android)
-* [BLE example](https://github.com/Polidea/RxAndroidBle/blob/master/sample/src/main/java/com/polidea/rxandroidble2/sample/example2_connection/ConnectionExampleActivity.java)
+## Gotchas
+* Sometimes the project might not compile even though there are no compilation 
+issues. If this happens run `./gradlew clean`. If this doesn't help, try 
+invalidating [Intellij IDEA] caches and restart.
+* If after opening the project nothing works, perform a Gradle refresh and 
+after that is done, restart the IDE.
 
 [JDK 8]: https://openjdk.java.net/install
 [Intellij IDEA]: https://www.jetbrains.com/idea
-[Android Support]: https://plugins.jetbrains.com/plugin/1792-android-support
-[Android Studio]: https://developer.android.com/studio
 [Arduino project]: https://github.com/KonrolMathisen/RPG-grid-arduino-19733
