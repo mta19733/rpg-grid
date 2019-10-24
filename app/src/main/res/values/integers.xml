@@ -4,9 +4,6 @@
   <integer name="ble_scan_timeout_millis">10000</integer>
   <integer name="ble_write_retries">5</integer>
 
-  <integer name="button_grid_margin">5</integer>
-  <integer name="button_grid_size">100</integer>
-
   <integer name="grid_full_size">32</integer>
   <integer name="grid_view_size">8</integer>
 </resources>

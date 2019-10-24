@@ -23,7 +23,7 @@ class DefaultGridViewModelTest {
                         Tile(2, false), Tile(3, true)
                     )
                 ),
-                size = 2
+                size = SIZE
             )
         }
     }
@@ -95,8 +95,32 @@ class DefaultGridViewModelTest {
         )
     }
 
+    @Test
+    fun `should create view info`() {
+        val view = DefaultGridViewModel(
+            gridStorageService = gridStorageService,
+            viewSize = SIZE
+        )
+
+        view.createViewInfo()
+
+        assertThat(view.info.value).isEqualTo("0,3")
+    }
+
+    @Test
+    fun `should move bottom right and create view info`() {
+        view.move(Direction.RIGHT)
+        view.move(Direction.DOWN)
+
+        view.createViewInfo()
+
+        assertThat(view.info.value).isEqualTo("0")
+    }
+
     private fun Tile.asGrid() = Grid(
         tiles = listOf(listOf(this)),
         size = 1
     )
 }
+
+private const val SIZE = 2

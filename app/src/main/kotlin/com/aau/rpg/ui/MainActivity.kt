@@ -2,7 +2,6 @@ package com.aau.rpg.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,6 +11,8 @@ import com.aau.rpg.ui.connection.ConnectionFragment
 import com.aau.rpg.ui.connection.Status
 import com.aau.rpg.ui.grid.GridFragment
 import com.aau.rpg.ui.util.FragmentPager
+import com.aau.rpg.ui.util.logDebug
+import com.aau.rpg.ui.util.logError
 import com.aau.rpg.ui.util.toast
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.tab_layout
@@ -47,7 +48,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sentDataObserver() = Observer<String> { data ->
-        toast("${getString(R.string.msg_prefix_sent)} $data")
+        logDebug("Sent data: $data")
+        toast(getString(R.string.msg_sent_data))
     }
 
     private fun statusObserver() = Observer<Status> { status: Status ->
@@ -61,14 +63,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun errorObserver() = Observer<Throwable> { error ->
-        val message = error?.message ?: ""
-        toast("${getString(R.string.msg_prefix_error)} $message")
-
-        Log.e(
-            MainActivity::class.java.simpleName,
-            "Bluetooth error",
-            error
-        )
+        logError("Bluetooth error", error)
+        toast(getString(R.string.msg_error, error?.message ?: ""))
     }
 
     private fun setupPager(fragments: List<Pair<*, Fragment>>) {

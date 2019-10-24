@@ -12,6 +12,16 @@ abstract class GridViewModel : ViewModel() {
     abstract val grid: LiveData<Grid>
 
     /**
+     * View info string changes.
+     */
+    abstract val info: LiveData<String>
+
+    /**
+     * Create new view info.
+     */
+    abstract fun createViewInfo()
+
+    /**
      * Move current grid to given [direction].
      */
     abstract fun move(direction: Direction)

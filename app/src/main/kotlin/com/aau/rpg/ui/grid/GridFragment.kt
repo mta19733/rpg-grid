@@ -10,40 +10,38 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
 import com.aau.rpg.core.grid.Grid
+import com.aau.rpg.ui.connection.BluetoothViewModel
 import kotlinx.android.synthetic.main.fragment_grid.button_down
 import kotlinx.android.synthetic.main.fragment_grid.button_left
 import kotlinx.android.synthetic.main.fragment_grid.button_right
+import kotlinx.android.synthetic.main.fragment_grid.button_sync
 import kotlinx.android.synthetic.main.fragment_grid.button_up
 import kotlinx.android.synthetic.main.fragment_grid.grid
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class GridFragment : Fragment() {
 
+    private val bluetoothViewModel by sharedViewModel<BluetoothViewModel>()
     private val gridViewModel by sharedViewModel<GridViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View =
         inflater.inflate(R.layout.fragment_grid, group, false)
 
     override fun onViewCreated(view: View, saved: Bundle?) {
+        bluetoothViewModel.connected.observe(this, observeConnected())
         gridViewModel.grid.observe(this, observeGrid())
+        gridViewModel.info.observe(this, observeInfo())
+
+        setupGridSync()
         setupNavigation()
     }
 
-    private fun navigationClickListener(direction: Direction) = View.OnClickListener {
-        gridViewModel.move(direction)
+    private fun observeConnected() = Observer<Boolean> { connected ->
+        button_sync.isEnabled = connected
     }
 
-    private fun setupNavigation() {
-        val navigation = listOf(
-            button_left to Direction.LEFT,
-            button_right to Direction.RIGHT,
-            button_up to Direction.UP,
-            button_down to Direction.DOWN
-        )
-
-        navigation.forEach { (button, direction) ->
-            button.setOnClickListener(navigationClickListener(direction))
-        }
+    private fun observeInfo() = Observer<String> { info ->
+        bluetoothViewModel.send(info)
     }
 
     private fun onCheckChange(id: Int, checked: Boolean) {
@@ -98,6 +96,27 @@ class GridFragment : Fragment() {
             initializeGrid(newGrid)
         } else {
             updateGrid(newGrid)
+        }
+    }
+
+    private fun setupGridSync() {
+        button_sync.setOnClickListener {
+            gridViewModel.createViewInfo()
+        }
+    }
+
+    private fun setupNavigation() {
+        val navigation = listOf(
+            button_left to Direction.LEFT,
+            button_right to Direction.RIGHT,
+            button_up to Direction.UP,
+            button_down to Direction.DOWN
+        )
+
+        navigation.forEach { (button, direction) ->
+            button.setOnClickListener {
+                gridViewModel.move(direction)
+            }
         }
     }
 }

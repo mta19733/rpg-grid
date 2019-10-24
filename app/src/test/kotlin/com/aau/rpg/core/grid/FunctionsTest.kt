@@ -8,7 +8,7 @@ class FunctionsTest {
 
     @Test
     fun `should create grid`() {
-        val grid = grid(2)
+        val grid = gridOf(2)
 
         assertThat(grid).isEqualTo(
             Grid(
@@ -42,7 +42,13 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.subGrid(0, 0, 2)
+        val subGrid = fullGrid.view(
+            Position(
+                row = 0,
+                col = 0
+            ),
+            size = 2
+        )
 
         assertThat(subGrid).isEqualTo(
             Grid(
@@ -76,7 +82,13 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.subGrid(1, 1, 2)
+        val subGrid = fullGrid.view(
+            position = Position(
+                row = 1,
+                col = 1
+            ),
+            size = 2
+        )
 
         assertThat(subGrid).isEqualTo(
             Grid(
@@ -91,24 +103,5 @@ class FunctionsTest {
                 size = 2
             )
         )
-    }
-
-    @Test
-    fun `should create normalized ids string`() {
-        val grid = Grid(
-            tiles = listOf(
-                listOf(
-                    Tile(0, true), Tile(1, false)
-                ),
-                listOf(
-                    Tile(2, false), Tile(3, true)
-                )
-            ),
-            size = 2
-        )
-
-        val ids = grid.normalizedIds()
-
-        assertThat(ids).isEqualTo("0,3")
     }
 }
