@@ -12,11 +12,6 @@ abstract class GridViewModel : ViewModel() {
     abstract val grid: LiveData<Grid>
 
     /**
-     * Information about tile changes.
-     */
-    abstract val tile: LiveData<Tile>
-
-    /**
      * Move current grid to given [direction].
      */
     abstract fun move(direction: Direction)

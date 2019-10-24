@@ -5,6 +5,7 @@ import com.aau.rpg.core.grid.Grid
 import com.aau.rpg.core.grid.GridStorageService
 import com.aau.rpg.core.grid.subGrid
 import kotlin.math.max
+import kotlin.math.min
 
 class DefaultGridViewModel(
     gridStorageService: GridStorageService,
@@ -18,8 +19,6 @@ class DefaultGridViewModel(
 
     override val grid = MutableLiveData<Grid>(createViewGrid())
 
-    override val tile = MutableLiveData<Tile>()
-
     override fun move(direction: Direction) {
         updateViewGridPosition(direction)
         notifyViewGridChanges()
@@ -29,20 +28,17 @@ class DefaultGridViewModel(
         val newTile = Tile(id, value)
 
         updateFullGrid(newTile)
-        notifyViewGridChanges()
-
-        tile.value = newTile
     }
 
     private fun resolveViewRow(direction: Direction?) = when (direction) {
         Direction.UP -> max(viewRowIdx - viewSize, 0)
-        Direction.DOWN -> max(viewRowIdx + viewSize, 0)
+        Direction.DOWN -> min(viewRowIdx + viewSize, fullGrid.size - viewSize)
         else -> viewRowIdx
     }
 
     private fun resolveViewCol(direction: Direction?) = when (direction) {
         Direction.LEFT -> max(viewColIdx - viewSize, 0)
-        Direction.RIGHT -> max(viewColIdx + viewSize, 0)
+        Direction.RIGHT -> min(viewColIdx + viewSize, fullGrid.size - viewSize)
         else -> viewColIdx
     }
 

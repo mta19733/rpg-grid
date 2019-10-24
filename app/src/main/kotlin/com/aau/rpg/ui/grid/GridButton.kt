@@ -9,14 +9,20 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.setMargins
 import com.aau.rpg.R
 
+typealias CheckChangeListener = (id: Int, checked: Boolean) -> Unit
+
 class GridButton(context: Context) : ToggleButton(context) {
+
+    private val clickAnimation = loadAnimation(context, R.anim.bounce)
+    private var onCheckChange: CheckChangeListener = emptyListener
 
     constructor(
         context: Context,
         checked: Boolean,
         id: Int,
-        onClick: (id: Int, checked: Boolean) -> Unit
+        onCheckChange: CheckChangeListener
     ) : this(context) {
+        this.onCheckChange = onCheckChange
         this.background = getDrawable(context, R.drawable.selector_button_grid)
         this.isChecked = checked
         this.id = id
@@ -36,15 +42,38 @@ class GridButton(context: Context) : ToggleButton(context) {
         textOn = ""
         text = ""
 
-        val changeAnimation = loadAnimation(context, R.anim.bounce)
-        setOnCheckedChangeListener { button, newChecked ->
-            button.startAnimation(changeAnimation)
-            onClick(id, newChecked)
-        }
+        startAnimation()
+        setupCheckChangeListener()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
         setMeasuredDimension(width, width)
     }
+
+    fun refresh(checked: Boolean, id: Int) {
+
+        // Listener has to be removed before changing checked state, otherwise it gets triggered
+        // unnecessarily. Afterwards it has to be reset.
+        val oldOnCheckChange = onCheckChange
+
+        this.onCheckChange = emptyListener
+        this.isChecked = checked
+        this.onCheckChange = oldOnCheckChange
+
+        this.id = id
+    }
+
+    private fun startAnimation() {
+        startAnimation(clickAnimation)
+    }
+
+    private fun setupCheckChangeListener() {
+        setOnCheckedChangeListener { _, newChecked ->
+            startAnimation()
+            onCheckChange(id, newChecked)
+        }
+    }
 }
+
+private val emptyListener: CheckChangeListener = { _, _ -> }
