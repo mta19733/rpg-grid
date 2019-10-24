@@ -32,13 +32,15 @@
       android:id="@+id/device_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textSize="36sp"
+      android:layout_margin="@dimen/text_view_margin"
+      android:textSize="@dimen/text_view_text_large"
     />
     <TextView
       android:id="@+id/device_mac"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textSize="32sp"
+      android:layout_margin="@dimen/text_view_margin"
+      android:textSize="@dimen/text_view_text_big"
     />
   </LinearLayout>
 
@@ -52,7 +54,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/button_connect"
-      android:layout_margin="4dp"
+      android:layout_margin="@dimen/button_margin"
       android:layout_weight="1"
     />
     <com.google.android.material.button.MaterialButton
@@ -61,7 +63,7 @@
       android:layout_height="wrap_content"
       android:text="@string/button_send"
       android:layout_weight="1"
-      android:layout_margin="4dp"
+      android:layout_margin="@dimen/button_margin"
       android:enabled="false"
     />
   </LinearLayout>

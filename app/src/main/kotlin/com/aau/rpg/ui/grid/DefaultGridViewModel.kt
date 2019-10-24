@@ -3,6 +3,8 @@ package com.aau.rpg.ui.grid
 import androidx.lifecycle.MutableLiveData
 import com.aau.rpg.core.grid.Grid
 import com.aau.rpg.core.grid.GridStorageService
+import com.aau.rpg.core.grid.Position
+import com.aau.rpg.core.grid.positionOf
 import com.aau.rpg.core.grid.subGrid
 import kotlin.math.max
 import kotlin.math.min
@@ -14,8 +16,7 @@ class DefaultGridViewModel(
 
     private var fullGrid: Grid = gridStorageService.load()
 
-    private var viewRowIdx = 0
-    private var viewColIdx = 0
+    override val position = MutableLiveData<Position>(positionOf())
 
     override val grid = MutableLiveData<Grid>(createViewGrid())
 
@@ -30,26 +31,41 @@ class DefaultGridViewModel(
         updateFullGrid(newTile)
     }
 
-    private fun resolveViewRow(direction: Direction?) = when (direction) {
-        Direction.UP -> max(viewRowIdx - viewSize, 0)
-        Direction.DOWN -> min(viewRowIdx + viewSize, fullGrid.size - viewSize)
-        else -> viewRowIdx
+    private fun currentPosition() = position.value ?: positionOf()
+
+    private fun resolveViewRow(direction: Direction?): Int {
+        val row = currentPosition().row
+
+        return when (direction) {
+            Direction.UP -> max(row - viewSize, 0)
+            Direction.DOWN -> min(row + viewSize, fullGrid.size - viewSize)
+            else -> row
+        }
     }
 
-    private fun resolveViewCol(direction: Direction?) = when (direction) {
-        Direction.LEFT -> max(viewColIdx - viewSize, 0)
-        Direction.RIGHT -> min(viewColIdx + viewSize, fullGrid.size - viewSize)
-        else -> viewColIdx
+    private fun resolveViewCol(direction: Direction?): Int {
+        val col = currentPosition().col
+
+        return when (direction) {
+            Direction.LEFT -> max(col - viewSize, 0)
+            Direction.RIGHT -> min(col + viewSize, fullGrid.size - viewSize)
+            else -> col
+        }
     }
 
     private fun updateViewGridPosition(direction: Direction) {
-        viewRowIdx = resolveViewRow(direction)
-        viewColIdx = resolveViewCol(direction)
+        val newPosition = Position(
+            row = resolveViewRow(direction),
+            col = resolveViewCol(direction)
+        )
+
+        if (newPosition != position.value) {
+            position.value = newPosition
+        }
     }
 
     private fun createViewGrid() = fullGrid.subGrid(
-        fromRow = viewRowIdx,
-        fromCol = viewColIdx,
+        position = currentPosition(),
         size = viewSize
     )
 

@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
-import com.aau.rpg.core.grid.grid
+import com.aau.rpg.core.grid.gridOf
 import com.aau.rpg.core.grid.normalizedIds
 import com.aau.rpg.ui.util.toast
 import kotlinx.android.synthetic.main.fragment_connection.button_connect
@@ -82,7 +82,7 @@ class ConnectionFragment : Fragment() {
     }
 
     private fun sendListener() = View.OnClickListener {
-        bluetoothViewModel.send(grid(3).normalizedIds())
+        bluetoothViewModel.send(gridOf(3).normalizedIds())
     }
 
     private fun disconnectListener() = View.OnClickListener {

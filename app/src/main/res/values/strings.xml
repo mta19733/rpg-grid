@@ -20,6 +20,8 @@
 
   <string name="bluetooth_pin">6969</string>
 
+  <string name="txt_grid_info">row = %1$d col = %2$d</string>
+
   <string name="msg_bluetooth_device_lost_connection">
     Lost connection to device
   </string>

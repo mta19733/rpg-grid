@@ -27,8 +27,8 @@ class GridButton(context: Context) : ToggleButton(context) {
         this.isChecked = checked
         this.id = id
 
-        val margin = context.resources.getInteger(R.integer.button_grid_margin)
-        val size = context.resources.getInteger(R.integer.button_grid_size)
+        val margin = resources.getDimension(R.dimen.button_grid_margin).toInt()
+        val size = resources.getDimension(R.dimen.button_grid_size).toInt()
 
         val linearLayoutParams = LinearLayout.LayoutParams(size, size)
         val gridLayoutParams = GridLayout.LayoutParams(linearLayoutParams).apply {

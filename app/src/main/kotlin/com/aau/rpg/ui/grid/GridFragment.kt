@@ -29,10 +29,6 @@ class GridFragment : Fragment() {
         setupNavigation()
     }
 
-    private fun navigationClickListener(direction: Direction) = View.OnClickListener {
-        gridViewModel.move(direction)
-    }
-
     private fun setupNavigation() {
         val navigation = listOf(
             button_left to Direction.LEFT,
@@ -42,7 +38,9 @@ class GridFragment : Fragment() {
         )
 
         navigation.forEach { (button, direction) ->
-            button.setOnClickListener(navigationClickListener(direction))
+            button.setOnClickListener {
+                gridViewModel.move(direction)
+            }
         }
     }
 

@@ -8,7 +8,7 @@ class FunctionsTest {
 
     @Test
     fun `should create grid`() {
-        val grid = grid(2)
+        val grid = gridOf(2)
 
         assertThat(grid).isEqualTo(
             Grid(
@@ -42,7 +42,13 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.subGrid(0, 0, 2)
+        val subGrid = fullGrid.subGrid(
+            Position(
+                row = 0,
+                col = 0
+            ),
+            size = 2
+        )
 
         assertThat(subGrid).isEqualTo(
             Grid(
@@ -76,7 +82,13 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.subGrid(1, 1, 2)
+        val subGrid = fullGrid.subGrid(
+            position = Position(
+                row = 1,
+                col = 1
+            ),
+            size = 2
+        )
 
         assertThat(subGrid).isEqualTo(
             Grid(

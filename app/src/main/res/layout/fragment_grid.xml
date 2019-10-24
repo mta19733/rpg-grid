@@ -1,73 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="horizontal"
-  android:columnCount="3"
-  android:rowCount="3"
+  android:layout_width="match_parent"
+  android:orientation="vertical"
 >
   <com.otaliastudios.zoom.ZoomLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_columnSpan="3"
-    android:layout_column="0"
-    android:layout_gravity="fill_vertical"
-    android:layout_row="0"
-    android:layout_rowWeight="1"
+    android:layout_weight="8"
     app:hasClickableChildren="true"
     app:minZoom="1"
     app:maxZoom="2"
   >
     <GridLayout
+      android:id="@+id/grid"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:id="@+id/grid"
     />
   </com.otaliastudios.zoom.ZoomLayout>
 
-  <com.google.android.material.button.MaterialButton
-    android:layout_columnWeight="1"
-    android:layout_gravity="fill_vertical|end"
-    android:layout_rowSpan="2"
-    android:layout_column="0"
-    android:layout_row="1"
-    android:id="@+id/button_left"
-    style="@style/NavigationButton"
-    app:iconGravity="textEnd"
-    app:icon="@drawable/ic_arrow_left"
-  />
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+  >
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+    >
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_up"
+        style="@style/NavigationButton"
+        app:iconGravity="textEnd"
+        app:icon="@drawable/ic_arrow_up"
+      />
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+    >
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_left"
+        style="@style/NavigationButton"
+        app:iconGravity="textEnd"
+        app:icon="@drawable/ic_arrow_left"
+      />
 
-  <com.google.android.material.button.MaterialButton
-    android:layout_gravity="center"
-    android:layout_column="1"
-    android:layout_row="1"
-    android:id="@+id/button_up"
-    style="@style/NavigationButton"
-    app:iconGravity="textEnd"
-    app:icon="@drawable/ic_arrow_up"
-  />
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_down"
+        style="@style/NavigationButton"
+        app:iconGravity="textEnd"
+        app:icon="@drawable/ic_arrow_down"
+      />
 
-  <com.google.android.material.button.MaterialButton
-    android:layout_gravity="center"
-    android:layout_column="1"
-    android:layout_row="2"
-    android:id="@+id/button_down"
-    style="@style/NavigationButton"
-    app:iconGravity="textEnd"
-    app:icon="@drawable/ic_arrow_down"
-  />
-
-  <com.google.android.material.button.MaterialButton
-    android:layout_columnWeight="1"
-    android:layout_gravity="fill_vertical|start"
-    android:layout_rowSpan="2"
-    android:layout_column="2"
-    android:layout_row="1"
-    android:id="@+id/button_right"
-    style="@style/NavigationButton"
-    app:iconGravity="textEnd"
-    app:icon="@drawable/ic_arrow_right"
-  />
-</GridLayout>
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_right"
+        style="@style/NavigationButton"
+        app:iconGravity="textEnd"
+        app:icon="@drawable/ic_arrow_right"
+      />
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>
