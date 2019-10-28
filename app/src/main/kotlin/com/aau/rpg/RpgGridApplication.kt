@@ -3,14 +3,16 @@ package com.aau.rpg
 import android.app.Application
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.RxBluetoothService
-import com.aau.rpg.core.grid.JsonGridStorageService
 import com.aau.rpg.core.grid.GridStorageService
+import com.aau.rpg.core.grid.JsonGridStorageService
 import com.aau.rpg.core.json.FileJsonStorageService
 import com.aau.rpg.core.json.JsonStorageService
 import com.aau.rpg.ui.connection.BluetoothViewModel
-import com.aau.rpg.ui.connection.DefaultBluetoothViewModel
-import com.aau.rpg.ui.grid.DefaultGridViewModel
+import com.aau.rpg.ui.connection.ConnectionBluetoothViewModel
+import com.aau.rpg.ui.grid.GameGridViewModel
 import com.aau.rpg.ui.grid.GridViewModel
+import com.aau.rpg.ui.management.StoringManagementViewModel
+import com.aau.rpg.ui.management.ManagementViewModel
 import com.polidea.rxandroidble2.RxBleClient
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -34,8 +36,7 @@ class RpgGridApplication : Application() {
     )
 
     private fun createGridStorageService(): GridStorageService = JsonGridStorageService(
-        jsonService = get(),
-        size = resources.getInteger(R.integer.grid_full_size)
+        jsonService = get()
     )
 
     private fun createBluetoothService(): BluetoothService = RxBluetoothService(
@@ -56,15 +57,22 @@ class RpgGridApplication : Application() {
             single { createBluetoothService() }
 
             viewModel<BluetoothViewModel> {
-                DefaultBluetoothViewModel(
+                ConnectionBluetoothViewModel(
                     bluetooth = get()
                 )
             }
 
             viewModel<GridViewModel> {
-                DefaultGridViewModel(
-                    gridStorageService = get(),
+                GameGridViewModel(
+                    idDelimiter = resources.getString(R.string.grid_id_delimiter),
                     viewSize = resources.getInteger(R.integer.grid_view_size)
+                )
+            }
+
+            viewModel<ManagementViewModel> {
+                StoringManagementViewModel(
+                    gridStorage = get(),
+                    gridSize = resources.getInteger(R.integer.grid_full_size)
                 )
             }
         }

@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 
-class DefaultBluetoothViewModel(
+class ConnectionBluetoothViewModel(
     private val bluetooth: BluetoothService
 ) : BluetoothViewModel() {
 

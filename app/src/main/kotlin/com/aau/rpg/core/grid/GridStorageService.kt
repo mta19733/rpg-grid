@@ -1,33 +1,27 @@
 package com.aau.rpg.core.grid
 
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 
 interface GridStorageService {
 
     /**
-     * Load grid from previous session.
+     * Returns information about available grids.
      */
-    fun load(): Single<Grid>
+    fun loadGridInfos(): Observable<List<GridInfo>>
 
     /**
-     * Returns a list of grid names.
+     * Returns a single grid by [name].
      */
-    fun list(): Observable<List<String>>
+    fun loadGrid(name: String): Observable<Grid>
 
     /**
-     * Returns a single grid by name.
+     * Saves provided grid.
      */
-    fun load(name: String): Observable<Grid>
+    fun saveGrid(grid: Grid): Observable<Unit>
 
     /**
-     * Saves provided grid with given name.
+     * Deletes grid with given [name].
      */
-    fun save(grid: Grid): Observable<Unit>
-
-    /**
-     * Deletes grid with given name.
-     */
-    fun delete(name: String): Observable<Unit>
+    fun deleteGrid(name: String): Observable<Unit>
 }

@@ -20,7 +20,8 @@ class FunctionsTest {
                         Tile(2, false), Tile(3, false)
                     )
                 ),
-                size = 2
+                size = 2,
+                name = grid.name
             )
         )
     }
@@ -60,7 +61,8 @@ class FunctionsTest {
                         Tile(3, true), Tile(4, true)
                     )
                 ),
-                size = 2
+                size = 2,
+                name = fullGrid.name
             )
         )
     }
@@ -100,7 +102,8 @@ class FunctionsTest {
                         Tile(7, true), Tile(8, true)
                     )
                 ),
-                size = 2
+                size = 2,
+                name = fullGrid.name
             )
         )
     }

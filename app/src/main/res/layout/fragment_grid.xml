@@ -7,6 +7,15 @@
   android:orientation="vertical"
 >
 
+  <TextView
+    android:id="@+id/grid_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/text_view_margin"
+    android:textAlignment="center"
+    android:textSize="@dimen/text_view_text_med"
+  />
+
   <com.otaliastudios.zoom.ZoomLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -32,7 +41,7 @@
       android:layout_height="wrap_content"
     >
       <com.google.android.material.button.MaterialButton
-        style="@style/GridControlButton"
+        style="@style/SquareButton"
         android:id="@+id/button_up"
         android:layout_centerInParent="true"
         app:iconGravity="textEnd"
@@ -40,7 +49,7 @@
       />
 
       <com.google.android.material.button.MaterialButton
-        style="@style/GridControlButton"
+        style="@style/SquareButton"
         android:id="@+id/button_sync"
         android:gravity="center"
         android:layout_alignParentEnd="true"
@@ -49,31 +58,44 @@
       />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
     >
-      <com.google.android.material.button.MaterialButton
-        style="@style/GridControlButton"
-        android:id="@+id/button_left"
-        app:iconGravity="textEnd"
-        app:icon="@drawable/ic_arrow_left"
-      />
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+      >
+        <com.google.android.material.button.MaterialButton
+          style="@style/SquareButton"
+          android:id="@+id/button_left"
+          app:iconGravity="textEnd"
+          app:icon="@drawable/ic_arrow_left"
+        />
+
+        <com.google.android.material.button.MaterialButton
+          style="@style/SquareButton"
+          android:id="@+id/button_down"
+          app:iconGravity="textEnd"
+          app:icon="@drawable/ic_arrow_down"
+        />
+
+        <com.google.android.material.button.MaterialButton
+          style="@style/SquareButton"
+          android:id="@+id/button_right"
+          app:iconGravity="textEnd"
+          app:icon="@drawable/ic_arrow_right"
+        />
+      </LinearLayout>
 
       <com.google.android.material.button.MaterialButton
-        style="@style/GridControlButton"
-        android:id="@+id/button_down"
+        style="@style/SquareButton"
+        android:id="@+id/button_save"
+        android:layout_alignParentEnd="true"
         app:iconGravity="textEnd"
-        app:icon="@drawable/ic_arrow_down"
+        app:icon="@drawable/ic_save"
       />
-
-      <com.google.android.material.button.MaterialButton
-        style="@style/GridControlButton"
-        android:id="@+id/button_right"
-        app:iconGravity="textEnd"
-        app:icon="@drawable/ic_arrow_right"
-      />
-    </LinearLayout>
+    </RelativeLayout>
   </LinearLayout>
 </LinearLayout>

@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-class DefaultBluetoothViewModelTest {
+class ConnectionBluetoothViewModelTest {
 
     private val bluetooth = mockk<BluetoothService>()
-    private val model = DefaultBluetoothViewModel(bluetooth)
+    private val model = ConnectionBluetoothViewModel(bluetooth)
 
     @Test
     fun `should send grid in correct format`() {

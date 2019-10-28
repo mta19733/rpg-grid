@@ -2,27 +2,27 @@ package com.aau.rpg.ui.grid
 
 import androidx.lifecycle.MutableLiveData
 import com.aau.rpg.core.grid.Grid
-import com.aau.rpg.core.grid.GridStorageService
 import com.aau.rpg.core.grid.Position
+import com.aau.rpg.core.grid.gridOf
 import com.aau.rpg.core.grid.positionOf
 import com.aau.rpg.core.grid.view
 import kotlin.math.max
 import kotlin.math.min
 
-class DefaultGridViewModel(
-    gridStorageService: GridStorageService,
+class GameGridViewModel(
+    private val idDelimiter: String,
     private val viewSize: Int
 ) : GridViewModel() {
 
+    override val currentGrid = MutableLiveData<Grid>(gridOf())
+    override val viewGrid = MutableLiveData<Grid>(gridOf())
+
+    override val viewIds = MutableLiveData<String>()
+
     private var position: Position = positionOf()
-    private var fullGrid: Grid = gridStorageService.load().blockingGet()
 
-    override val grid = MutableLiveData<Grid>(createViewGrid())
-
-    override val info = MutableLiveData<String>()
-
-    override fun createViewInfo() {
-        val tiles = fullGrid
+    override fun loadViewIds() {
+        val tiles = grid
             .view(position, viewSize)
             .tiles
 
@@ -35,9 +35,16 @@ class DefaultGridViewModel(
                     null
                 }
             }
-            .joinToString(",")
+            .joinToString(idDelimiter)
 
-        this.info.value = ids
+        this.viewIds.value = ids
+    }
+
+    override fun loadGrid(grid: Grid) {
+        position = positionOf()
+        currentGrid.value = grid
+
+        notifyViewGridChanges()
     }
 
     override fun move(direction: Direction) {
@@ -55,8 +62,11 @@ class DefaultGridViewModel(
         val row = position.row
 
         return when (direction) {
-            Direction.UP -> max(row - viewSize, 0)
-            Direction.DOWN -> min(row + viewSize, fullGrid.size - viewSize)
+            Direction.UP -> max(0, row - viewSize)
+            Direction.DOWN -> max(
+                0,
+                min(row + viewSize, grid.size - viewSize)
+            )
             else -> row
         }
     }
@@ -65,8 +75,11 @@ class DefaultGridViewModel(
         val col = position.col
 
         return when (direction) {
-            Direction.LEFT -> max(col - viewSize, 0)
-            Direction.RIGHT -> min(col + viewSize, fullGrid.size - viewSize)
+            Direction.LEFT -> max(0, col - viewSize)
+            Direction.RIGHT -> max(
+                0,
+                min(col + viewSize, grid.size - viewSize)
+            )
             else -> col
         }
     }
@@ -80,17 +93,17 @@ class DefaultGridViewModel(
         position = newPosition
     }
 
-    private fun createViewGrid() = fullGrid.view(
+    private fun createViewGrid() = grid.view(
         position = position,
-        size = viewSize
+        size = min(grid.size, viewSize)
     )
 
     private fun notifyViewGridChanges() {
-        grid.value = createViewGrid()
+        viewGrid.value = createViewGrid()
     }
 
     private fun updateFullGrid(tile: Tile) {
-        val newTiles = fullGrid.tiles.map { tileRow ->
+        val newTiles = grid.tiles.map { tileRow ->
             tileRow.map { tileCol ->
                 if (tileCol.id == tile.id) {
                     tile
@@ -100,8 +113,14 @@ class DefaultGridViewModel(
             }
         }
 
-        fullGrid = fullGrid.copy(
+        currentGrid.value = grid.copy(
             tiles = newTiles
         )
     }
+
+    /**
+     * Current grid value.
+     */
+    private val grid: Grid
+        get() = currentGrid.value ?: gridOf()
 }

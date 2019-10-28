@@ -10,12 +10,20 @@
   </string>
   <string name="ble_pin">6969</string>
 
+  <!-- Grid -->
+  <string name="grid_id_delimiter">,</string>
+
   <!-- Storage service -->
   <string name="storage_name">rpg_grid.json</string>
 
   <!-- Buttons -->
   <string name="button_disconnect">Disconnect</string>
   <string name="button_connect">Connect</string>
+  <string name="button_create">Create</string>
+  <string name="button_cancel">Cancel</string>
+  <string name="button_delete">Delete</string>
+  <string name="button_save">Save</string>
+  <string name="button_load">Load</string>
 
   <!-- Messages -->
   <string name="msg_bluetooth_device_lost_connection">
@@ -32,4 +40,15 @@
   </string>
   <string name="msg_sent_data">Data sent to device</string>
   <string name="msg_error">Error: %1$s</string>
+
+  <!-- Text -->
+  <string name="text_grid_title_delete">Delete grid</string>
+  <string name="text_grid_title_create">Create grid</string>
+  <string name="text_grid_title_load">Load grid</string>
+  <string name="text_grid_title_edit">Edit grid</string>
+  <string name="text_grid_title_save">Save grid</string>
+  <string name="text_grid_name">Grid name</string>
+  <string name="text_grid_delete">Are you sure you want to delete grid \"%1$s\"?</string>
+  <string name="text_grid_save">Are you sure you want to save current grid?</string>
+  <string name="text_grid_load">Are you sure you want to load grid \"%1$s\"?</string>
 </resources>

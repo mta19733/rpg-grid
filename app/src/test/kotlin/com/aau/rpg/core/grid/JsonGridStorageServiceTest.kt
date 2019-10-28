@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Test
 class JsonGridStorageServiceTest {
 
     private val jsonService = mockk<JsonStorageService>()
-    private val gridService = JsonGridStorageService(
-        jsonService = jsonService,
-        size = 123
-    )
+    private val gridService = JsonGridStorageService(jsonService)
 
     @Test
     fun `should list grid names`() {
         val name = "test grid"
+        val id = "test id"
+
+        val size = 1
+
         val json = """
             {
                 "grids": [
                     {
-                        "size": 0,
                         "name": "$name",
-                        "tiles": []
+                        "id": "$id",
+                        "size": $size
                     }
                 ]
             }
@@ -34,11 +35,14 @@ class JsonGridStorageServiceTest {
 
         every { jsonService.load() } returns Observable.just(JSONObject(json))
 
-        val names = gridService
-            .list()
+        val infos = gridService
+            .loadGridInfos()
             .blockingFirst()
 
-        assertThat(names).containsOnly(name)
+        assertThat(infos).allSatisfy { info ->
+            assertThat(info.name).isEqualTo(name)
+            assertThat(info.size).isEqualTo(info.size)
+        }
     }
 
     @Test
@@ -72,7 +76,7 @@ class JsonGridStorageServiceTest {
         every { jsonService.load() } returns Observable.just(JSONObject(json))
 
         val loadedGrid = gridService
-            .load(grid.name)
+            .loadGrid(grid.name)
             .blockingFirst()
 
         assertThat(loadedGrid).isEqualTo(grid)
@@ -92,7 +96,7 @@ class JsonGridStorageServiceTest {
         every { jsonService.load() } returns Observable.just(JSONObject())
 
         gridService
-            .save(grid)
+            .saveGrid(grid)
             .blockingFirst()
 
         val exp = """
@@ -151,7 +155,7 @@ class JsonGridStorageServiceTest {
         every { jsonService.load() } returns Observable.just(JSONObject(json))
 
         gridService
-            .delete(grid.name)
+            .deleteGrid(grid.name)
             .blockingFirst()
 
         val exp = """

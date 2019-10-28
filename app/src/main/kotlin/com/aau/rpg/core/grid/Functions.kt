@@ -1,6 +1,7 @@
 package com.aau.rpg.core.grid
 
 import com.aau.rpg.ui.grid.Tile
+import kotlin.math.min
 
 /**
  * Returns a "view" 2D grid of [size] from given [position].
@@ -8,10 +9,12 @@ import com.aau.rpg.ui.grid.Tile
 fun Grid.view(position: Position, size: Int): Grid {
     val (row, col) = position
 
+    val rowSize = min(tiles.size, size)
     val tiles = tiles
-        .subList(row, row + size)
+        .subList(row, row + rowSize)
         .map { tileRow ->
-            tileRow.subList(col, col + size)
+            val colSize = min(tileRow.size, size)
+            tileRow.subList(col, col + colSize)
         }
 
     return copy(

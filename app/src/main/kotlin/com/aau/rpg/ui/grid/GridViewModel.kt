@@ -7,27 +7,37 @@ import com.aau.rpg.core.grid.Grid
 abstract class GridViewModel : ViewModel() {
 
     /**
-     * Information about grid changes.
+     * Currently loaded full grid.
      */
-    abstract val grid: LiveData<Grid>
+    abstract val currentGrid: LiveData<Grid>
 
     /**
-     * View info string changes.
+     * View of full grid (peephole).
      */
-    abstract val info: LiveData<String>
+    abstract val viewGrid: LiveData<Grid>
 
     /**
-     * Create new view info.
+     * Ids of [viewGrid].
      */
-    abstract fun createViewInfo()
+    abstract val viewIds: LiveData<String>
 
     /**
-     * Move current grid to given [direction].
+     * Load new [viewIds].
+     */
+    abstract fun loadViewIds()
+
+    /**
+     * Load a new grid into [currentGrid].
+     */
+    abstract fun loadGrid(grid: Grid)
+
+    /**
+     * Move [currentGrid] to given [direction].
      */
     abstract fun move(direction: Direction)
 
     /**
-     * Set tile value.
+     * Change tile with [id] to new [value].
      */
     abstract fun set(id: Int, value: Boolean)
 }
