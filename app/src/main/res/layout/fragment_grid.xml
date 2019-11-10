@@ -41,19 +41,17 @@
       android:layout_height="wrap_content"
     >
       <com.google.android.material.button.MaterialButton
-        style="@style/SquareButton"
+        style="@style/TinyButton"
         android:id="@+id/button_up"
         android:layout_centerInParent="true"
-        app:iconGravity="textEnd"
         app:icon="@drawable/ic_arrow_up"
       />
 
       <com.google.android.material.button.MaterialButton
-        style="@style/SquareButton"
+        style="@style/TinyButton"
         android:id="@+id/button_sync"
         android:gravity="center"
         android:layout_alignParentEnd="true"
-        app:iconGravity="textEnd"
         app:icon="@drawable/ic_sync"
       />
     </RelativeLayout>
@@ -68,32 +66,28 @@
         android:layout_centerInParent="true"
       >
         <com.google.android.material.button.MaterialButton
-          style="@style/SquareButton"
+          style="@style/TinyButton"
           android:id="@+id/button_left"
-          app:iconGravity="textEnd"
           app:icon="@drawable/ic_arrow_left"
         />
 
         <com.google.android.material.button.MaterialButton
-          style="@style/SquareButton"
+          style="@style/TinyButton"
           android:id="@+id/button_down"
-          app:iconGravity="textEnd"
           app:icon="@drawable/ic_arrow_down"
         />
 
         <com.google.android.material.button.MaterialButton
-          style="@style/SquareButton"
+          style="@style/TinyButton"
           android:id="@+id/button_right"
-          app:iconGravity="textEnd"
           app:icon="@drawable/ic_arrow_right"
         />
       </LinearLayout>
 
       <com.google.android.material.button.MaterialButton
-        style="@style/SquareButton"
+        style="@style/TinyButton"
         android:id="@+id/button_save"
         android:layout_alignParentEnd="true"
-        app:iconGravity="textEnd"
         app:icon="@drawable/ic_save"
       />
     </RelativeLayout>
