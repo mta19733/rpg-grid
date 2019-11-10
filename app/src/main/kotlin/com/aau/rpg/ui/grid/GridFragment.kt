@@ -35,6 +35,7 @@ class GridFragment : Fragment() {
     override fun onViewCreated(view: View, saved: Bundle?) {
         bluetoothViewModel.connected.observe(this, connectedObserver())
 
+        gridViewModel.directionState.observe(this, directionStateObserver())
         gridViewModel.currentGrid.observe(this, currentGridObserver())
         gridViewModel.viewGrid.observe(this, viewGridObserver())
         gridViewModel.viewIds.observe(this, viewIdsObserver())
@@ -42,6 +43,17 @@ class GridFragment : Fragment() {
         setupNavigationButtons()
         setupSyncButton()
         setupSaveButton()
+    }
+
+    private fun directionStateObserver() = Observer<DirectionState> { (direction, enabled) ->
+        val button = when (direction) {
+            Direction.LEFT -> button_left
+            Direction.RIGHT -> button_right
+            Direction.UP -> button_up
+            Direction.DOWN -> button_down
+        }
+
+        button.isEnabled = enabled
     }
 
     private fun currentGridObserver() = Observer<Grid> { grid ->
@@ -126,6 +138,7 @@ class GridFragment : Fragment() {
         )
 
         navigation.forEach { (button, direction) ->
+            button.isEnabled = false
             button.setOnClickListener {
                 gridViewModel.move(direction)
             }

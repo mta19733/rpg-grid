@@ -7,6 +7,11 @@ import com.aau.rpg.core.grid.Grid
 abstract class GridViewModel : ViewModel() {
 
     /**
+     * Info about whether it is possible to navigate to given direction.
+     */
+    abstract val directionState: LiveData<DirectionState>
+
+    /**
      * Currently loaded full grid.
      */
     abstract val currentGrid: LiveData<Grid>

@@ -14,6 +14,8 @@ class GameGridViewModel(
     private val viewSize: Int
 ) : GridViewModel() {
 
+    override val directionState = MutableLiveData<DirectionState>()
+
     override val currentGrid = MutableLiveData<Grid>(gridOf())
     override val viewGrid = MutableLiveData<Grid>(gridOf())
 
@@ -100,6 +102,31 @@ class GameGridViewModel(
 
     private fun notifyViewGridChanges() {
         viewGrid.value = createViewGrid()
+
+        val (row, col) = position
+        if (row == 0) {
+            directionState.value = DirectionState(Direction.UP, false)
+        } else {
+            directionState.value = DirectionState(Direction.UP, true)
+        }
+
+        if (row + viewSize == grid.size) {
+            directionState.value = DirectionState(Direction.DOWN, false)
+        } else {
+            directionState.value = DirectionState(Direction.DOWN, true)
+        }
+
+        if (col == 0) {
+            directionState.value = DirectionState(Direction.LEFT, false)
+        } else {
+            directionState.value = DirectionState(Direction.LEFT, true)
+        }
+
+        if (col + viewSize == grid.size) {
+            directionState.value = DirectionState(Direction.RIGHT, false)
+        } else {
+            directionState.value = DirectionState(Direction.RIGHT, true)
+        }
     }
 
     private fun updateFullGrid(tile: Tile) {
