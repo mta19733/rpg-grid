@@ -14,36 +14,23 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-class DefaultBluetoothViewModelTest {
+class ConnectionBluetoothViewModelTest {
 
     private val bluetooth = mockk<BluetoothService>()
-    private val model = DefaultBluetoothViewModel(bluetooth)
+    private val model = ConnectionBluetoothViewModel(bluetooth)
 
     @Test
     fun `should send grid in correct format`() {
         val data = slot<String>()
         val conn = mockk<BluetoothConnection> {
-            every {
-                observeState()
-            } answers {
-                Observable.just(ConnectionState.CONNECTED)
-            }
-
-            every {
-                send(capture(data))
-            } answers {
-                Single.just(firstArg())
-            }
+            every { send(capture(data)) } answers { Single.just(firstArg()) }
+            every { observeState() } returns Observable.just(ConnectionState.CONNECTED)
 
             every { name } returns ""
             every { mac } returns ""
         }
 
-        every {
-            bluetooth.connect()
-        } answers {
-            Observable.just(conn)
-        }
+        every { bluetooth.connect() } returns Observable.just(conn)
 
         val rawData = "0,4,8"
         model.connect()

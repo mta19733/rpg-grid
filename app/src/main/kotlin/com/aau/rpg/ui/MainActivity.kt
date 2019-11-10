@@ -10,6 +10,8 @@ import com.aau.rpg.ui.connection.BluetoothViewModel
 import com.aau.rpg.ui.connection.ConnectionFragment
 import com.aau.rpg.ui.connection.Status
 import com.aau.rpg.ui.grid.GridFragment
+import com.aau.rpg.ui.management.ManagementFragment
+import com.aau.rpg.ui.management.ManagementViewModel
 import com.aau.rpg.ui.util.FragmentPager
 import com.aau.rpg.ui.util.logDebug
 import com.aau.rpg.ui.util.logError
@@ -21,7 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val bluetooth by viewModel<BluetoothViewModel>()
+    private val bluetoothViewModel by viewModel<BluetoothViewModel>()
+    private val managementViewModel by viewModel<ManagementViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,15 +33,19 @@ class MainActivity : AppCompatActivity() {
 
         // Connection state must be observed in root, so that it does not get cleared when
         // connection fragment cleans up.
-        bluetooth.observeState()
-        bluetooth.sentData.observe(this, sentDataObserver())
-        bluetooth.status.observe(this, statusObserver())
-        bluetooth.error.observe(this, errorObserver())
+        bluetoothViewModel.sentData.observe(this, sentDataObserver())
+        bluetoothViewModel.status.observe(this, statusObserver())
+
+        val errors = errorObserver()
+        managementViewModel.error.observe(this, errors)
+        bluetoothViewModel.error.observe(this, errors)
+
+        bluetoothViewModel.observeState()
 
         val fragments = listOf(
             getDrawable(R.drawable.ic_bluetooth) to ConnectionFragment(),
             getDrawable(R.drawable.ic_videogame_asset) to GridFragment(),
-            getDrawable(R.drawable.ic_settings) to SettingsFragment()
+            getDrawable(R.drawable.ic_settings) to ManagementFragment()
         )
 
         setupPager(fragments)

@@ -1,0 +1,23 @@
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+>
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/input_margin"
+  >
+    <com.google.android.material.textfield.TextInputEditText
+      tools:ignore="Autofill"
+      android:id="@+id/grid_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="text"
+      android:lines="1"
+      android:hint="@string/text_grid_name"
+    />
+  </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

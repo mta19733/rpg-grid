@@ -81,6 +81,7 @@ dependencies {
 
     // Tests.
     testImplementation("org.assertj:assertj-core:3.13.2")
+    testImplementation("org.json:json:20190722")
     testImplementation("io.mockk:mockk:1.9.3")
 
     val junitVersion = "5.5.2"

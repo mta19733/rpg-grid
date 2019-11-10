@@ -1,6 +1,7 @@
 <resources>
   <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar" />
-  <style name="GridControlButton" parent="Widget.MaterialComponents.Button.Icon">
+
+  <style name="SquareButton" parent="Widget.MaterialComponents.Button.Icon">
     <item name="android:layout_width">50dp</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginRight">@dimen/button_margin</item>

@@ -1,26 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">RPG Grid</string>
-  <string name="device_unknown_name">Unknown</string>
-  <string
-    name="service_id"
-    tools:ignore="TypographyDashes"
-  >
+
+  <!-- Bluetooth service -->
+  <string name="ble_service_id" tools:ignore="TypographyDashes">
     d2007d50-6730-41c0-a871-06695ae08a55
   </string>
-  <string
-    name="characteristic_id"
-    tools:ignore="TypographyDashes"
-  >
+  <string name="ble_characteristic_id" tools:ignore="TypographyDashes">
     2be82d7d-6dd9-40ee-8ee9-af581af0fc92
   </string>
+  <string name="ble_pin">6969</string>
 
+  <!-- Grid -->
+  <string name="grid_id_delimiter">,</string>
+
+  <!-- Storage service -->
+  <string name="storage_name">rpg_grid.json</string>
+
+  <!-- Buttons -->
   <string name="button_disconnect">Disconnect</string>
   <string name="button_connect">Connect</string>
+  <string name="button_create">Create</string>
+  <string name="button_cancel">Cancel</string>
+  <string name="button_delete">Delete</string>
+  <string name="button_save">Save</string>
+  <string name="button_load">Load</string>
 
-  <string name="bluetooth_pin">6969</string>
-
-  <string name="txt_grid_info">row = %1$d col = %2$d</string>
-
+  <!-- Messages -->
   <string name="msg_bluetooth_device_lost_connection">
     Lost connection to device
   </string>
@@ -33,7 +38,17 @@
   <string name="msg_bluetooth_not_enabled">
     Bluetooth service must be enabled
   </string>
-
   <string name="msg_sent_data">Data sent to device</string>
   <string name="msg_error">Error: %1$s</string>
+
+  <!-- Text -->
+  <string name="text_grid_title_delete">Delete grid</string>
+  <string name="text_grid_title_create">Create grid</string>
+  <string name="text_grid_title_load">Load grid</string>
+  <string name="text_grid_title_edit">Edit grid</string>
+  <string name="text_grid_title_save">Save grid</string>
+  <string name="text_grid_name">Grid name</string>
+  <string name="text_grid_delete">Are you sure you want to delete grid \"%1$s\"?</string>
+  <string name="text_grid_save">Are you sure you want to save current grid?</string>
+  <string name="text_grid_load">Are you sure you want to load grid \"%1$s\"?</string>
 </resources>

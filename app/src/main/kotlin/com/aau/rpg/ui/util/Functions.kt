@@ -4,8 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.aau.rpg.R
 
 /**
  * Display a toast notification on [Activity].
@@ -18,6 +21,39 @@ fun Activity.toast(text: String, duration: Int = Toast.LENGTH_SHORT) =
  */
 fun Fragment.toast(text: String, duration: Int = Toast.LENGTH_SHORT) =
     toast(context, text, duration)
+
+/**
+ * Display an [AlertDialog] on [Fragment].
+ */
+fun Fragment.showAlertDialog(
+    titleText: String,
+    positiveButtonText: String,
+    onSubmit: () -> Unit,
+    negativeButtonText: String = getString(R.string.button_cancel),
+    messageText: String? = null,
+    view: View? = null
+): AlertDialog {
+    val dialog = AlertDialog
+        .Builder(requireContext())
+        .setTitle(titleText)
+        .setPositiveButton(positiveButtonText) { dialog, _ ->
+            onSubmit()
+            dialog.cancel()
+        }
+        .setNegativeButton(negativeButtonText) { dialog, _ ->
+            dialog.cancel()
+        }
+
+    if (messageText != null) {
+        dialog.setMessage(messageText)
+    }
+
+    if (view != null) {
+        dialog.setView(view)
+    }
+
+    return dialog.show()
+}
 
 /**
  * Log a debug log message using [this] as tag.
