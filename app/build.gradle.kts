@@ -59,7 +59,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
     // Utilities.
-    implementation("com.polidea.rxandroidble2:rxandroidble:1.10.2")
+    implementation("com.polidea.rxandroidble2:rxandroidble:1.10.4")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
 

@@ -23,8 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val bluetoothViewModel by viewModel<BluetoothViewModel>()
     private val managementViewModel by viewModel<ManagementViewModel>()
+    private val bluetoothViewModel by viewModel<BluetoothViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
