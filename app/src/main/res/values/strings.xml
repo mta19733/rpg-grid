@@ -35,6 +35,9 @@
   <string name="msg_bluetooth_device_not_found">
     Device not found, try enabling location services
   </string>
+  <string name="msg_bluetooth_location_not_enabled">
+    Bluetooth and location services must be enabled
+  </string>
   <string name="msg_bluetooth_not_enabled">
     Bluetooth service must be enabled
   </string>

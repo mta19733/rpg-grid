@@ -1,12 +1,18 @@
 package com.aau.rpg.ui.connection
 
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_DENIED
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.checkSelfPermission
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
@@ -36,7 +42,13 @@ class ConnectionFragment : Fragment() {
             if (Activity.RESULT_OK == resultCode) {
                 bluetoothViewModel.connect()
             } else {
-                toast(getString(R.string.msg_bluetooth_not_enabled))
+                val message = if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP_MR1) {
+                    getString(R.string.msg_bluetooth_location_not_enabled)
+                } else {
+                    getString(R.string.msg_bluetooth_not_enabled)
+                }
+
+                toast(message)
             }
         }
     }
@@ -81,11 +93,22 @@ class ConnectionFragment : Fragment() {
     }
 
     private fun requestListener() = View.OnClickListener {
-        startActivityForResult(
-            Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE),
-            REQUEST_ENABLE_BLUETOOTH
-        )
+        if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP_MR1
+            && checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PERMISSION_DENIED
+        ) {
+            requestPermissions(
+                requireActivity(),
+                arrayOf(ACCESS_FINE_LOCATION),
+                REQUEST_ENABLE_LOCATION
+            )
+        } else {
+            startActivityForResult(
+                Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE),
+                REQUEST_ENABLE_BLUETOOTH
+            )
+        }
     }
 }
 
 private const val REQUEST_ENABLE_BLUETOOTH = 1
+private const val REQUEST_ENABLE_LOCATION = 2
