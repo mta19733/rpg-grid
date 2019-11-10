@@ -87,21 +87,17 @@ class GameGridViewModel(
     }
 
     private fun updateViewGridPosition(direction: Direction) {
-        val newPosition = position.copy(
+        position = position.copy(
             row = resolveViewRow(direction),
             col = resolveViewCol(direction)
         )
-
-        position = newPosition
     }
 
-    private fun createViewGrid() = grid.viewOf(
-        position = position,
-        size = min(grid.size, viewSize)
-    )
-
     private fun notifyViewGridChanges() {
-        viewGrid.value = createViewGrid()
+        viewGrid.value = grid.viewOf(
+            position = position,
+            size = min(grid.size, viewSize)
+        )
 
         val (row, col) = position
         if (row == 0) {

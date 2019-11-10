@@ -9,6 +9,6 @@
   <dimen name="button_grid_size" tools:ignore="PxUsage">100px</dimen>
   <dimen name="button_margin">5dp</dimen>
 
-  <dimen name="input_margin">10sp</dimen>
-  <dimen name="card_margin">5sp</dimen>
+  <dimen name="input_margin">10dp</dimen>
+  <dimen name="card_margin">5dp</dimen>
 </resources>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   android:animateLayoutChanges="true"
+  android:orientation="vertical"
 >
   <LinearLayout
     android:id="@+id/progress_connecting"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
     android:visibility="gone"
@@ -20,36 +20,81 @@
     />
   </LinearLayout>
 
-  <LinearLayout
+  <com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_info"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:orientation="vertical"
-    android:background="?android:attr/selectableItemBackground"
-    android:padding="16sp"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/card_margin"
+    android:layout_above="@+id/button_connect"
+    android:layout_below="@+id/progress_connecting"
+    android:visibility="gone"
   >
-    <TextView
-      android:id="@+id/device_name"
+    <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/text_view_margin"
-      android:textSize="@dimen/text_view_text_large"
-    />
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+    >
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary"
+        android:textSize="@dimen/text_view_text_big"
+        android:padding="@dimen/text_view_margin"
+        android:text="@string/text_device_connected_to"
+      />
 
-    <TextView
-      android:id="@+id/device_mac"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/text_view_margin"
-      android:textSize="@dimen/text_view_text_big"
-    />
-  </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_view_margin"
+        android:orientation="vertical"
+      >
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textColor="@color/color_black"
+          android:text="@string/text_device_title_name"
+        />
+
+        <TextView
+          android:id="@+id/device_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textSize="@dimen/text_view_text_med"
+        />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_view_margin"
+        android:orientation="vertical"
+      >
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textColor="@color/color_black"
+          android:text="@string/text_device_title_mac"
+        />
+
+        <TextView
+          android:id="@+id/device_mac"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textSize="@dimen/text_view_text_med"
+        />
+      </LinearLayout>
+    </LinearLayout>
+  </com.google.android.material.card.MaterialCardView>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/button_connect"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/button_connect"
+    android:layout_alignParentBottom="true"
     android:layout_margin="@dimen/button_margin"
+    android:layout_below="@+id/progress_connecting"
+    android:text="@string/button_connect"
   />
-</LinearLayout>
+</RelativeLayout>

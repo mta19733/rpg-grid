@@ -111,15 +111,15 @@ class FunctionsTest {
     @Test
     fun `should calculate middle of even grid`() {
         val (row, col) = gridOf(size = 24).middleOf(8)
-        assertThat(row).isEqualTo(1)
-        assertThat(col).isEqualTo(1)
+        assertThat(row).isEqualTo(8)
+        assertThat(col).isEqualTo(8)
     }
 
     @Test
     fun `should calculate middle of odd grid`() {
-        val (row, col) = gridOf(size = 18).middleOf(8)
-        assertThat(row).isEqualTo(1)
-        assertThat(col).isEqualTo(1)
+        val (row, col) = gridOf(size = 16).middleOf(8)
+        assertThat(row).isEqualTo(8)
+        assertThat(col).isEqualTo(8)
     }
 
     @Test

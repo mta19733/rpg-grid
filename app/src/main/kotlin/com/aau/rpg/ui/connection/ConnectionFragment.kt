@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import com.aau.rpg.R
 import com.aau.rpg.ui.util.toast
 import kotlinx.android.synthetic.main.fragment_connection.button_connect
+import kotlinx.android.synthetic.main.fragment_connection.device_info
 import kotlinx.android.synthetic.main.fragment_connection.device_mac
 import kotlinx.android.synthetic.main.fragment_connection.device_name
 import kotlinx.android.synthetic.main.fragment_connection.progress_connecting
@@ -62,9 +63,13 @@ class ConnectionFragment : Fragment() {
         if (connected) {
             button_connect.text = getString(R.string.button_disconnect)
             button_connect.setOnClickListener(disconnectListener())
+
+            device_info.visibility = View.VISIBLE
         } else {
             button_connect.text = getString(R.string.button_connect)
             button_connect.setOnClickListener(connectListener())
+
+            device_info.visibility = View.GONE
         }
     }
 

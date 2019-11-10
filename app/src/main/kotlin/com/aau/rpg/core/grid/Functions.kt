@@ -1,6 +1,7 @@
 package com.aau.rpg.core.grid
 
 import com.aau.rpg.ui.grid.Tile
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -27,7 +28,8 @@ fun Grid.viewOf(position: Position, size: Int): Grid {
  * Returns position which is the middle of the grid.
  */
 fun Grid.middleOf(viewSize: Int): Position {
-    val middle = size / viewSize / 2
+    val multiplier = size / max(1, viewSize) / 2
+    val middle = viewSize * multiplier
 
     return Position(
         row = middle,
