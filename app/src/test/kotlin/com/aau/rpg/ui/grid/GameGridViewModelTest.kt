@@ -3,6 +3,7 @@ package com.aau.rpg.ui.grid
 import com.aau.rpg.core.grid.gridOf
 import com.aau.rpg.test.InstantExecutorExtension
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.ListAssert
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -121,11 +122,101 @@ class GameGridViewModelTest {
         assertThat(view.viewIds.value).isEqualTo("0")
     }
 
+    @Test
+    fun `should disable up`() {
+        val values = observeDirectionStates()
+        view.move(Direction.UP)
+        assertThat(values).isEqualTo(up = false)
+    }
+
+    @Test
+    fun `should disable up left`() {
+        val values = observeDirectionStates()
+        view.move(Direction.UP)
+        view.move(Direction.LEFT)
+
+        assertThat(values).isEqualTo(up = false, left = false)
+    }
+
+    @Test
+    fun `should disable up right`() {
+        val values = observeDirectionStates()
+        view.move(Direction.UP)
+        view.move(Direction.RIGHT)
+
+        assertThat(values).isEqualTo(up = false, right = false)
+    }
+
+    @Test
+    fun `should disable down`() {
+        val values = observeDirectionStates()
+        view.move(Direction.DOWN)
+        assertThat(values).isEqualTo(down = false)
+    }
+
+    @Test
+    fun `should disable down left`() {
+        val values = observeDirectionStates()
+        view.move(Direction.DOWN)
+        view.move(Direction.LEFT)
+
+        assertThat(values).isEqualTo(down = false, left = false)
+    }
+
+    @Test
+    fun `should disable down right`() {
+        val values = observeDirectionStates()
+        view.move(Direction.DOWN)
+        view.move(Direction.RIGHT)
+
+        assertThat(values).isEqualTo(down = false, right = false)
+    }
+
+    @Test
+    fun `should disable left`() {
+        val values = observeDirectionStates()
+        view.move(Direction.LEFT)
+        assertThat(values).isEqualTo(left = false)
+    }
+
+    @Test
+    fun `should disable right`() {
+        val values = observeDirectionStates()
+        view.move(Direction.RIGHT)
+        assertThat(values).isEqualTo(right = false)
+    }
+
     private fun Tile.asGrid() = gridOf(
         tiles = listOf(listOf(this)),
         size = 1,
         name = NAME
     )
+
+    private fun observeDirectionStates(): List<DirectionState> {
+        val states = mutableListOf<DirectionState>()
+        view.directionState.observeForever { state ->
+            states += state
+        }
+
+        return states
+    }
+
+    private fun ListAssert<DirectionState>.isEqualTo(
+        up: Boolean = true,
+        down: Boolean = true,
+        left: Boolean = true,
+        right: Boolean = true
+    ) = satisfies { states ->
+        val directions = states
+            .takeLast(Direction.values().size)
+            .associateBy(DirectionState::direction)
+            .mapValues { entry -> entry.value.enabled }
+
+        assertThat(directions[Direction.UP]).isEqualTo(up)
+        assertThat(directions[Direction.DOWN]).isEqualTo(down)
+        assertThat(directions[Direction.LEFT]).isEqualTo(left)
+        assertThat(directions[Direction.RIGHT]).isEqualTo(right)
+    }
 }
 
 private const val SIZE = 3
