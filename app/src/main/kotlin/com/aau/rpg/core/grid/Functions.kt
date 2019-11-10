@@ -6,7 +6,7 @@ import kotlin.math.min
 /**
  * Returns a "view" 2D grid of [size] from given [position].
  */
-fun Grid.view(position: Position, size: Int): Grid {
+fun Grid.viewOf(position: Position, size: Int): Grid {
     val (row, col) = position
 
     val rowSize = min(tiles.size, size)
@@ -24,9 +24,16 @@ fun Grid.view(position: Position, size: Int): Grid {
 }
 
 /**
- * Returns new [Position].
+ * Returns position which is the middle of the grid.
  */
-fun positionOf(row: Int = 0, col: Int = 0) = Position(row, col)
+fun Grid.middleOf(viewSize: Int): Position {
+    val middle = size / viewSize / 2
+
+    return Position(
+        row = middle,
+        col = middle
+    )
+}
 
 /**
  * Returns 2D with given parameters.

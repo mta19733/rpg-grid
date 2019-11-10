@@ -18,10 +18,13 @@ class GameGridViewModelTest {
     private val grid = gridOf(
         tiles = listOf(
             listOf(
-                Tile(0, true), Tile(1, false)
+                Tile(0, true), Tile(1, false), Tile(2, false)
             ),
             listOf(
-                Tile(2, false), Tile(3, true)
+                Tile(3, false), Tile(4, true), Tile(5, false)
+            ),
+            listOf(
+                Tile(6, false), Tile(7, false), Tile(8, true)
             )
         ),
         size = SIZE,
@@ -38,7 +41,7 @@ class GameGridViewModelTest {
         view.move(Direction.RIGHT)
 
         assertThat(view.viewGrid.value).isEqualTo(
-            Tile(1, false).asGrid()
+            Tile(5, false).asGrid()
         )
     }
 
@@ -48,7 +51,7 @@ class GameGridViewModelTest {
         view.move(Direction.LEFT)
 
         assertThat(view.viewGrid.value).isEqualTo(
-            Tile(0, true).asGrid()
+            Tile(4, true).asGrid()
         )
     }
 
@@ -57,7 +60,7 @@ class GameGridViewModelTest {
         view.move(Direction.DOWN)
 
         assertThat(view.viewGrid.value).isEqualTo(
-            Tile(2, false).asGrid()
+            Tile(7, false).asGrid()
         )
     }
 
@@ -67,7 +70,7 @@ class GameGridViewModelTest {
         view.move(Direction.UP)
 
         assertThat(view.viewGrid.value).isEqualTo(
-            Tile(0, true).asGrid()
+            Tile(4, true).asGrid()
         )
     }
 
@@ -78,18 +81,18 @@ class GameGridViewModelTest {
         view.move(Direction.DOWN)
 
         assertThat(view.viewGrid.value).isEqualTo(
-            Tile(3, true).asGrid()
+            Tile(8, true).asGrid()
         )
     }
 
     @Test
     fun `should set bottom right tile`() {
-        view.set(3, false)
+        view.set(8, false)
 
         view.move(Direction.RIGHT)
         view.move(Direction.DOWN)
 
-        val tile = Tile(3, false)
+        val tile = Tile(8, false)
         assertThat(view.viewGrid.value).isEqualTo(
             tile.asGrid()
         )
@@ -105,7 +108,7 @@ class GameGridViewModelTest {
         view.loadGrid(grid)
         view.loadViewIds()
 
-        assertThat(view.viewIds.value).isEqualTo("0,3")
+        assertThat(view.viewIds.value).isEqualTo("0,4,8")
     }
 
     @Test
@@ -125,5 +128,5 @@ class GameGridViewModelTest {
     )
 }
 
-private const val SIZE = 2
-private const val NAME = "test id"
+private const val SIZE = 3
+private const val NAME = "test name"

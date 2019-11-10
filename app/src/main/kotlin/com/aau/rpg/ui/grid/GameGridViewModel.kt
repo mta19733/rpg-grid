@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.aau.rpg.core.grid.Grid
 import com.aau.rpg.core.grid.Position
 import com.aau.rpg.core.grid.gridOf
-import com.aau.rpg.core.grid.positionOf
-import com.aau.rpg.core.grid.view
+import com.aau.rpg.core.grid.middleOf
+import com.aau.rpg.core.grid.viewOf
 import kotlin.math.max
 import kotlin.math.min
 
@@ -21,11 +21,11 @@ class GameGridViewModel(
 
     override val viewIds = MutableLiveData<String>()
 
-    private var position: Position = positionOf()
+    private var position: Position = Position(0, 0)
 
     override fun loadViewIds() {
         val tiles = grid
-            .view(position, viewSize)
+            .viewOf(position, viewSize)
             .tiles
 
         val ids = tiles
@@ -43,8 +43,8 @@ class GameGridViewModel(
     }
 
     override fun loadGrid(grid: Grid) {
-        position = positionOf()
         currentGrid.value = grid
+        position = grid.middleOf(viewSize)
 
         notifyViewGridChanges()
     }
@@ -87,7 +87,7 @@ class GameGridViewModel(
     }
 
     private fun updateViewGridPosition(direction: Direction) {
-        val newPosition = Position(
+        val newPosition = position.copy(
             row = resolveViewRow(direction),
             col = resolveViewCol(direction)
         )
@@ -95,7 +95,7 @@ class GameGridViewModel(
         position = newPosition
     }
 
-    private fun createViewGrid() = grid.view(
+    private fun createViewGrid() = grid.viewOf(
         position = position,
         size = min(grid.size, viewSize)
     )

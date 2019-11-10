@@ -43,7 +43,7 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.view(
+        val subGrid = fullGrid.viewOf(
             Position(
                 row = 0,
                 col = 0
@@ -84,7 +84,7 @@ class FunctionsTest {
             size = 3
         )
 
-        val subGrid = fullGrid.view(
+        val subGrid = fullGrid.viewOf(
             position = Position(
                 row = 1,
                 col = 1
@@ -106,5 +106,26 @@ class FunctionsTest {
                 name = fullGrid.name
             )
         )
+    }
+
+    @Test
+    fun `should calculate middle of even grid`() {
+        val (row, col) = gridOf(size = 24).middleOf(8)
+        assertThat(row).isEqualTo(1)
+        assertThat(col).isEqualTo(1)
+    }
+
+    @Test
+    fun `should calculate middle of odd grid`() {
+        val (row, col) = gridOf(size = 18).middleOf(8)
+        assertThat(row).isEqualTo(1)
+        assertThat(col).isEqualTo(1)
+    }
+
+    @Test
+    fun `should calculate middle of same view grid`() {
+        val (row, col) = gridOf(size = 8).middleOf(8)
+        assertThat(row).isEqualTo(0)
+        assertThat(col).isEqualTo(0)
     }
 }
