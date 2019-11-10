@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ManagementFragment : Fragment() {
 
-    private val settingsViewModel by sharedViewModel<ManagementViewModel>()
+    private val managementViewModel by sharedViewModel<ManagementViewModel>()
     private val gridViewModel by sharedViewModel<GridViewModel>()
 
     private val adapter by lazy(::createGirdInfoRecyclerView)
@@ -38,13 +38,13 @@ class ManagementFragment : Fragment() {
 
         button_create.setOnClickListener(gridCreateListener())
 
-        settingsViewModel.gridNameValid.observe(this, gridNameValidObserver())
-        settingsViewModel.updated.observe(this, updatedObserver())
-        settingsViewModel.loading.observe(this, loadingObserver())
-        settingsViewModel.loaded.observe(this, loadedObserver())
-        settingsViewModel.infos.observe(this, infosObserver())
+        managementViewModel.gridNameValid.observe(this, gridNameValidObserver())
+        managementViewModel.updated.observe(this, updatedObserver())
+        managementViewModel.loading.observe(this, loadingObserver())
+        managementViewModel.loaded.observe(this, loadedObserver())
+        managementViewModel.infos.observe(this, infosObserver())
 
-        settingsViewModel.loadGrids()
+        managementViewModel.loadGrids()
     }
 
     private fun showGridAlertDialog(
@@ -88,12 +88,12 @@ class ManagementFragment : Fragment() {
             titleText = getString(R.string.text_grid_title_create),
             positiveButtonText = getString(R.string.button_create),
             onChange = { name ->
-                settingsViewModel.isGridNameValid(
+                managementViewModel.isGridNameValid(
                     newName = name
                 )
             },
             onSubmit = { name ->
-                settingsViewModel.createGrid(name)
+                managementViewModel.createGrid(name)
             }
         )
     }
@@ -110,7 +110,7 @@ class ManagementFragment : Fragment() {
             messageText = getString(R.string.text_grid_delete, info.name),
             titleText = getString(R.string.text_grid_title_delete),
             onSubmit = {
-                settingsViewModel.deleteGrid(info.name)
+                managementViewModel.deleteGrid(info.name)
             }
         )
     }
@@ -121,7 +121,7 @@ class ManagementFragment : Fragment() {
             messageText = getString(R.string.text_grid_load, info.name),
             titleText = getString(R.string.text_grid_title_load),
             onSubmit = {
-                settingsViewModel.loadGrid(info.name)
+                managementViewModel.loadGrid(info.name)
             }
         )
     }
@@ -133,13 +133,13 @@ class ManagementFragment : Fragment() {
             allowSubmit = true,
             gridName = info.name,
             onChange = { name ->
-                settingsViewModel.isGridNameValid(
+                managementViewModel.isGridNameValid(
                     oldName = info.name,
                     newName = name
                 )
             },
             onSubmit = { name ->
-                settingsViewModel.updateGridName(
+                managementViewModel.updateGridName(
                     oldName = info.name,
                     newName = name
                 )
@@ -157,7 +157,7 @@ class ManagementFragment : Fragment() {
     private fun updatedObserver() = Observer<UpdatedGridInfo> { updated ->
         val currentName = gridViewModel.currentGrid.value?.name
         if (updated.oldName == currentName && updated.newName != currentName) {
-            settingsViewModel.loadGrid(updated.newName)
+            managementViewModel.loadGrid(updated.newName)
         }
     }
 

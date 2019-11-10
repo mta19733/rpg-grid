@@ -25,9 +25,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class GridFragment : Fragment() {
 
+    private val managementViewModel by sharedViewModel<ManagementViewModel>()
     private val bluetoothViewModel by sharedViewModel<BluetoothViewModel>()
     private val gridViewModel by sharedViewModel<GridViewModel>()
-    private val settingsViewModel by sharedViewModel<ManagementViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, group: ViewGroup?, saved: Bundle?): View =
         inflater.inflate(R.layout.fragment_grid, group, false)
@@ -146,7 +146,7 @@ class GridFragment : Fragment() {
                 titleText = getString(R.string.text_grid_title_save),
                 onSubmit = {
                     gridViewModel.currentGrid.value?.let { grid ->
-                        settingsViewModel.saveGrid(grid)
+                        managementViewModel.saveGrid(grid)
                     }
                 }
             )

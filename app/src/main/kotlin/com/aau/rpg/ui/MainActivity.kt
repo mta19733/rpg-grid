@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aau.rpg.R
-import com.aau.rpg.core.grid.Grid
 import com.aau.rpg.ui.connection.BluetoothViewModel
 import com.aau.rpg.ui.connection.ConnectionFragment
 import com.aau.rpg.ui.connection.Status
@@ -25,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private val bluetoothViewModel by viewModel<BluetoothViewModel>()
-    private val settingsViewModel by viewModel<ManagementViewModel>()
+    private val managementViewModel by viewModel<ManagementViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         bluetoothViewModel.status.observe(this, statusObserver())
 
         val errors = errorObserver()
+        managementViewModel.error.observe(this, errors)
         bluetoothViewModel.error.observe(this, errors)
-        settingsViewModel.error.observe(this, errors)
 
         bluetoothViewModel.observeState()
 
