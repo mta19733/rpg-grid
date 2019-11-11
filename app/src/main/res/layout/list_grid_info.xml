@@ -20,18 +20,16 @@
     />
 
     <com.google.android.material.button.MaterialButton
-      style="@style/SquareButton"
+      style="@style/TinyButton"
       android:id="@+id/button_edit"
       android:layout_toStartOf="@id/button_delete"
-      app:iconGravity="textEnd"
       app:icon="@drawable/ic_edit"
     />
 
     <com.google.android.material.button.MaterialButton
-      style="@style/SquareButton"
+      style="@style/TinyButton"
       android:id="@+id/button_delete"
       android:layout_alignParentEnd="true"
-      app:iconGravity="textEnd"
       app:icon="@drawable/ic_delete"
     />
   </RelativeLayout>
