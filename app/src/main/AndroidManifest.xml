@@ -16,7 +16,7 @@
 
     <activity
       android:configChanges="keyboardHidden|screenSize|orientation"
-      android:name="com.aau.rpg.ui.MainActivity"
+      android:name="com.aau.rpg.presentation.MainActivity"
     >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

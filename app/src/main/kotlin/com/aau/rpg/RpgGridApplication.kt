@@ -3,16 +3,16 @@ package com.aau.rpg
 import android.app.Application
 import com.aau.rpg.core.bluetooth.BluetoothService
 import com.aau.rpg.core.bluetooth.RxBluetoothService
-import com.aau.rpg.core.grid.GridStorageService
-import com.aau.rpg.core.grid.JsonGridStorageService
-import com.aau.rpg.core.json.FileJsonStorageService
-import com.aau.rpg.core.json.JsonStorageService
-import com.aau.rpg.ui.connection.BluetoothViewModel
-import com.aau.rpg.ui.connection.ConnectionBluetoothViewModel
-import com.aau.rpg.ui.grid.GameGridViewModel
-import com.aau.rpg.ui.grid.GridViewModel
-import com.aau.rpg.ui.management.StoringManagementViewModel
-import com.aau.rpg.ui.management.ManagementViewModel
+import com.aau.rpg.data.grid.GridRepository
+import com.aau.rpg.data.grid.JsonGridRepository
+import com.aau.rpg.data.json.FileJsonRepository
+import com.aau.rpg.data.json.JsonRepository
+import com.aau.rpg.presentation.connection.BluetoothViewModel
+import com.aau.rpg.presentation.connection.ConnectionBluetoothViewModel
+import com.aau.rpg.presentation.grid.GameGridViewModel
+import com.aau.rpg.presentation.grid.GridViewModel
+import com.aau.rpg.presentation.management.ManagementViewModel
+import com.aau.rpg.presentation.management.StoringManagementViewModel
 import com.polidea.rxandroidble2.RxBleClient
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
@@ -30,13 +30,13 @@ class RpgGridApplication : Application() {
         startKoin()
     }
 
-    private fun createJsonStorageService(): JsonStorageService = FileJsonStorageService(
+    private fun createJsonStorageService(): JsonRepository = FileJsonRepository(
         fileName = getString(R.string.storage_name),
         context = applicationContext
     )
 
-    private fun createGridStorageService(): GridStorageService = JsonGridStorageService(
-        jsonService = get()
+    private fun createGridStorageService(): GridRepository = JsonGridRepository(
+        jsonRepository = get()
     )
 
     private fun createBluetoothService(): BluetoothService = RxBluetoothService(
@@ -65,14 +65,14 @@ class RpgGridApplication : Application() {
             viewModel<GridViewModel> {
                 GameGridViewModel(
                     idDelimiter = resources.getString(R.string.grid_id_delimiter),
-                    viewSize = resources.getInteger(R.integer.grid_view_size)
+                    viewSize = resources.getInteger(R.integer.grid_view_size),
+                    gridSize = resources.getInteger(R.integer.grid_size)
                 )
             }
 
             viewModel<ManagementViewModel> {
                 StoringManagementViewModel(
-                    gridStorage = get(),
-                    gridSize = resources.getInteger(R.integer.grid_full_size)
+                    gridRepository = get()
                 )
             }
         }
