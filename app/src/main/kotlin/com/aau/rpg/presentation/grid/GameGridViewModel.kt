@@ -44,7 +44,7 @@ class GameGridViewModel(
     }
 
     override fun loadGrid(grid: Grid) {
-        currentGrid.value = grid
+        this@GameGridViewModel.grid = grid
         position = grid.middleOf()
 
         notifyViewGridChanges()
@@ -176,7 +176,7 @@ class GameGridViewModel(
             }
         }
 
-        currentGrid.value = grid.copy(
+        grid = grid.copy(
             tiles = newTiles
         )
     }
@@ -184,8 +184,13 @@ class GameGridViewModel(
     /**
      * Current grid value.
      */
-    private val grid: Grid
-        get() = currentGrid.value ?: createGridInternal()
+    private var grid: Grid
+        get() {
+            return currentGrid.value ?: createGridInternal()
+        }
+        set(value) {
+            currentGrid.value = value
+        }
 }
 
 private data class Position(val row: Int, val col: Int)

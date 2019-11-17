@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             pager += fragment
         }
 
+        view_pager.offscreenPageLimit = fragments.size
         view_pager.adapter = pager
     }
 
