@@ -55,7 +55,7 @@
   <string name="text_grid_save">Are you sure you want to save current grid?</string>
   <string name="text_grid_load">Are you sure you want to load grid \"%1$s\"?</string>
 
-  <string name="text_device_connected_to">Connected to</string>
+  <string name="text_device_title_connected">Connected</string>
   <string name="text_device_title_name">Name</string>
   <string name="text_device_title_mac">Mac</string>
 </resources>

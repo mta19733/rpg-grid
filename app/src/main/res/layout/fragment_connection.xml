@@ -38,9 +38,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/design_default_color_primary"
-        android:textSize="@dimen/text_view_text_big"
+        android:textColor="@color/design_default_color_on_primary"
+        android:textSize="@dimen/text_view_text_med"
         android:padding="@dimen/text_view_margin"
-        android:text="@string/text_device_connected_to"
+        android:text="@string/text_device_title_connected"
       />
 
       <LinearLayout
@@ -55,13 +56,13 @@
           android:textColor="@color/color_black"
           android:text="@string/text_device_title_name"
         />
-
         <TextView
           android:id="@+id/device_name"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:textSize="@dimen/text_view_text_med"
         />
+
       </LinearLayout>
 
       <LinearLayout

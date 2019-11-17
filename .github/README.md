@@ -2,6 +2,12 @@
 Android application to control electrochromic display based, role-playing game 
 board. The hardware code can be found on [Arduino project].
 
+<p align="center">
+  <img width="30%" src="screen_connected.png" />
+  <img width="30%" src="screen_grid.png" />
+  <img width="30%" src="screen_management.png" />
+</p>
+
 ## Prerequisites
 To build this project, the following tools are required:
 * [JDK 8] or greater.
