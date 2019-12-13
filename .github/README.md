@@ -38,4 +38,4 @@ after that is done, restart the IDE.
 
 [JDK 8]: https://openjdk.java.net/install
 [Intellij IDEA]: https://www.jetbrains.com/idea
-[Arduino project]: https://github.com/KonrolMathisen/RPG-grid-arduino-19733
+[Arduino project]: https://github.com/mta19733/rpg-grid-hw
