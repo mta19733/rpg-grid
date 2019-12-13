@@ -1,4 +1,4 @@
-# RPG Grid [![CircleCI](https://circleci.com/gh/Edvinas01/rpg-grid.svg?style=svg&circle-token=5c03dc54e44329a22a9a97221ae0b4363951e5d8)](https://circleci.com/gh/Edvinas01/rpg-grid)
+# RPG Grid [![CircleCI](https://circleci.com/gh/mta19733/rpg-grid.svg?style=svg&circle-token=5c03dc54e44329a22a9a97221ae0b4363951e5d8)](https://circleci.com/gh/Edvinas01/rpg-grid)
 Android application to control electrochromic display based, role-playing game 
 board. The hardware code can be found on [Arduino project].
 
